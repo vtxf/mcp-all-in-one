@@ -75,6 +75,7 @@
         "dist",
         "bin",
         "docs",
+        "resources",
         "schemas",
         "README.md",
         "README_zh-CN.md",
