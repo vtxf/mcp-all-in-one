@@ -61,9 +61,9 @@ mcp-all-in-one中配置chrome-devtools：npx -y chrome-devtools-mcp@latest
 
 ## 📚 文档
 
-- [快速开始指南](./docs/QUICK_START_GUIDE.md) - 快速上手mcp-all-in-one
-- [IDE配置指南](./docs/IDE_CONFIGURATION_GUIDE.md) - 在Claude Code和Cursor中配置mcp-all-in-one的详细指南
-- [自我配置功能详解](./docs/SELF_CONFIGURATION_GUIDE.md) - 如何使用mcp-all-in-one的自我配置功能
+- [快速开始指南](./docs/QUICK_START_GUIDE_zh-CN.md) - 快速上手mcp-all-in-one
+- [IDE配置指南](./docs/IDE_CONFIGURATION_GUIDE_zh-CN.md) - 在Claude Code和Cursor中配置mcp-all-in-one的详细指南
+- [自我配置功能详解](./docs/SELF_CONFIGURATION_GUIDE_zh-CN.md) - 如何使用mcp-all-in-one的自我配置功能
 
 ## 🤝 贡献
 
