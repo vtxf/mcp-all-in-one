@@ -4,61 +4,60 @@
 
 ## 开发工具类
 
-### 1. 文件系统访问
-- **名称**: File System MCP Server
-- **功能**: 提供文件系统访问能力，允许AI读取、写入和操作文件
-- **适用场景**: 代码编辑、文件管理、文档处理
-- **安装方式**: `npm install @modelcontextprotocol/server-filesystem`
+### 1. 上下文管理
+- **名称**: context7
+- **功能**: 提供上下文管理服务
+- **适用场景**: 上下文管理、对话历史记录
+- **安装方式**: `npx -y @upstash/context7-mcp@latest`
 - **配置示例**:
 ```json
 {
   "mcpServers": {
-    "filesystem": {
-      "command": "node",
-      "args": ["node_modules/@modelcontextprotocol/server-filesystem/dist/index.js"],
-      "env": {
-        "FILESYSTEM_ROOT": "/path/to/allowed/directory"
-      }
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ]
     }
   }
 }
 ```
 
-### 2. Git操作
-- **名称**: Git MCP Server
-- **功能**: 提供Git仓库操作能力，包括提交、分支、合并等
-- **适用场景**: 版本控制、代码管理
-- **安装方式**: `npm install @modelcontextprotocol/server-git`
+### 2. 网络请求
+- **名称**: Fetch
+- **功能**: 提供网络请求获取能力
+- **适用场景**: 数据获取、API调用、网络资源访问
+- **安装方式**: `uvx mcp-server-fetch`
 - **配置示例**:
 ```json
 {
   "mcpServers": {
-    "git": {
-      "command": "node",
-      "args": ["node_modules/@modelcontextprotocol/server-git/dist/index.js"],
-      "env": {
-        "GIT_REPO_PATH": "/path/to/git/repository"
-      }
+    "Fetch": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-fetch"
+      ]
     }
   }
 }
 ```
 
-### 3. 数据库操作
-- **名称**: SQLite MCP Server
-- **功能**: 提供SQLite数据库访问能力
-- **适用场景**: 数据查询、数据分析
-- **安装方式**: `npm install @modelcontextprotocol/server-sqlite`
+### 3. 时间服务
+- **名称**: Time
+- **功能**: 提供时间查询和时区转换功能
+- **适用场景**: 日程管理、时间规划、时区转换
+- **安装方式**: `uvx mcp-server-time`
 - **配置示例**:
 ```json
 {
   "mcpServers": {
-    "sqlite": {
-      "command": "node",
-      "args": ["node_modules/@modelcontextprotocol/server-sqlite/dist/index.js"],
-      "env": {
-        "SQLITE_DB_PATH": "/path/to/database.db"
-      }
+    "Time": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-time",
+        "--local-timezone=Asia/Shanghai"
+      ]
     }
   }
 }
@@ -66,138 +65,164 @@
 
 ## 生产力工具类
 
-### 4. 时间和日期
-- **名称**: Time MCP Server
-- **功能**: 提供时间查询、时区转换、日期计算等功能
-- **适用场景**: 日程管理、时间规划
-- **安装方式**: `npm install @modelcontextprotocol/server-time`
+### 4. 百度地图
+- **名称**: baidu-map
+- **功能**: 提供百度地图相关服务
+- **适用场景**: 地图查询、路径规划、位置服务
+- **安装方式**: `npx -y @baidumap/mcp-server-baidu-map`
 - **配置示例**:
 ```json
 {
   "mcpServers": {
-    "time": {
-      "command": "node",
-      "args": ["node_modules/@modelcontextprotocol/server-time/dist/index.js"]
+    "baidu-map": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@baidumap/mcp-server-baidu-map"
+      ]
     }
   }
 }
 ```
 
-### 5. 天气信息
-- **名称**: Weather MCP Server
-- **功能**: 提供天气查询、预报等功能
-- **适用场景**: 出行规划、活动安排
-- **安装方式**: `npm install @modelcontextprotocol/server-weather`
+### 5. GitHub集成
+- **名称**: github
+- **功能**: 提供GitHub仓库操作能力
+- **适用场景**: 代码管理、Issue处理、仓库操作
+- **安装方式**: `npx -y @modelcontextprotocol/server-github`
 - **配置示例**:
 ```json
 {
   "mcpServers": {
-    "weather": {
-      "command": "node",
-      "args": ["node_modules/@modelcontextprotocol/server-weather/dist/index.js"],
-      "env": {
-        "WEATHER_API_KEY": "your-api-key"
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ]
+    }
+  }
+}
+```
+
+### 6. Chrome开发者工具
+- **名称**: chrome-devtools
+- **功能**: 提供Chrome开发者工具集成
+- **适用场景**: 网页调试、性能分析、前端开发
+- **安装方式**: `npx -y chrome-devtools-mcp@latest`
+- **配置示例**:
+```json
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest",
+        "-e \"C:/Program Files/Google/Chrome/Application/chrome.exe\""
+      ]
+    }
+  }
+}
+```
+
+### 7. Obsidian集成
+- **名称**: obsidian-mcp
+- **功能**: 提供Obsidian笔记软件集成
+- **适用场景**: 笔记管理、知识库操作、文档整理
+- **安装方式**: `npx -y @jianruidutong/obsidian-mcp`
+- **配置示例**:
+```json
+{
+  "mcpServers": {
+    "obsidian-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@jianruidutong/obsidian-mcp"
+      ]
+    }
+  }
+}
+```
+
+## 云服务类
+
+### 8. 阿里云网络搜索
+- **名称**: aliyun-web-search
+- **功能**: 提供阿里云网络搜索服务
+- **适用场景**: 信息查询、网络搜索、实时信息获取
+- **连接类型**: SSE (Server-Sent Events)
+- **配置示例**:
+```json
+{
+  "mcpServers": {
+    "aliyun-web-search": {
+      "type": "sse",
+      "url": "https://dashscope.aliyuncs.com/api/v1/mcps/WebSearch/sse",
+      "headers": {
+        "Authorization": "Bearer ${DASHSCOPE_API_KEY}"
       }
     }
   }
 }
 ```
 
-### 6. 网络搜索
-- **名称**: Web Search MCP Server
-- **功能**: 提供网络搜索能力，获取最新信息
-- **适用场景**: 信息查询、研究分析
-- **安装方式**: `npm install @modelcontextprotocol/server-web-search`
+### 9. 阿里云语音识别
+- **名称**: aliyun-paraformer-asr
+- **功能**: 提供阿里云语音识别服务
+- **适用场景**: 语音转文字、会议记录、音频处理
+- **连接类型**: SSE (Server-Sent Events)
 - **配置示例**:
 ```json
 {
   "mcpServers": {
-    "web-search": {
-      "command": "node",
-      "args": ["node_modules/@modelcontextprotocol/server-web-search/dist/index.js"],
-      "env": {
-        "SEARCH_API_KEY": "your-search-api-key"
+    "aliyun-paraformer-asr": {
+      "type": "sse",
+      "url": "https://dashscope.aliyuncs.com/api/v1/mcps/SpeechToText/sse",
+      "headers": {
+        "Authorization": "Bearer ${DASHSCOPE_API_KEY}"
       }
     }
   }
 }
 ```
 
-## 通信与协作类
-
-### 7. 邮件服务
-- **名称**: Email MCP Server
-- **功能**: 提供邮件发送、接收和管理功能
-- **适用场景**: 邮件自动化、通知系统
-- **安装方式**: `npm install @modelcontextprotocol/server-email`
+### 10. 阿里云文本转语音
+- **名称**: aliyun-tts
+- **功能**: 提供阿里云文本转语音服务
+- **适用场景**: 语音合成、音频生成、无障碍服务
+- **连接类型**: SSE (Server-Sent Events)
 - **配置示例**:
 ```json
 {
   "mcpServers": {
-    "email": {
-      "command": "node",
-      "args": ["node_modules/@modelcontextprotocol/server-email/dist/index.js"],
-      "env": {
-        "EMAIL_HOST": "smtp.example.com",
-        "EMAIL_USER": "your-email@example.com",
-        "EMAIL_PASSWORD": "your-password"
+    "aliyun-tts": {
+      "type": "sse",
+      "url": "https://dashscope.aliyuncs.com/api/v1/mcps/QwenTextToSpeech/sse",
+      "headers": {
+        "Authorization": "Bearer ${DASHSCOPE_API_KEY}"
       }
     }
   }
 }
 ```
 
-### 8. Slack集成
-- **名称**: Slack MCP Server
-- **功能**: 提供Slack消息发送、频道管理等功能
-- **适用场景**: 团队协作、通知推送
-- **安装方式**: `npm install @modelcontextprotocol/server-slack`
+### 11. 阿里云Atlas模型
+- **名称**: aliyun-atlasmcp
+- **功能**: 提供阿里云Atlas模型服务
+- **适用场景**: AI模型调用、自然语言处理、智能分析
+- **连接类型**: SSE (Server-Sent Events)
 - **配置示例**:
 ```json
 {
   "mcpServers": {
-    "slack": {
-      "command": "node",
-      "args": ["node_modules/@modelcontextprotocol/server-slack/dist/index.js"],
-      "env": {
-        "SLACK_BOT_TOKEN": "xoxb-your-bot-token"
+    "aliyun-atlasmcp": {
+      "type": "sse",
+      "url": "https://dashscope.aliyuncs.com/api/v1/mcps/atlasmcp/sse",
+      "headers": {
+        "Authorization": "Bearer ${DASHSCOPE_API_KEY}"
       }
-    }
-  }
-}
-```
-
-## 数据分析与可视化类
-
-### 9. 数据处理
-- **名称**: Data Processing MCP Server
-- **功能**: 提供数据清洗、转换、分析等功能
-- **适用场景**: 数据科学、商业分析
-- **安装方式**: `npm install @modelcontextprotocol/server-data-processing`
-- **配置示例**:
-```json
-{
-  "mcpServers": {
-    "data-processing": {
-      "command": "node",
-      "args": ["node_modules/@modelcontextprotocol/server-data-processing/dist/index.js"]
-    }
-  }
-}
-```
-
-### 10. 图表生成
-- **名称**: Chart Generation MCP Server
-- **功能**: 提供各种图表生成能力
-- **适用场景**: 数据可视化、报告生成
-- **安装方式**: `npm install @modelcontextprotocol/server-chart`
-- **配置示例**:
-```json
-{
-  "mcpServers": {
-    "chart": {
-      "command": "node",
-      "args": ["node_modules/@modelcontextprotocol/server-chart/dist/index.js"]
     }
   }
 }
@@ -205,81 +230,60 @@
 
 ## AI与机器学习类
 
-### 11. 模型调用
-- **名称**: Model Invocation MCP Server
-- **功能**: 提供多种AI模型调用能力
-- **适用场景**: AI应用开发、模型比较
-- **安装方式**: `npm install @modelcontextprotocol/server-model-invocation`
+### 12. 智谱AI视觉理解
+- **名称**: zhipu-vision
+- **功能**: 提供智谱AI视觉理解服务
+- **适用场景**: 图像分析、视觉理解、多模态AI
+- **连接类型**: stdio
 - **配置示例**:
 ```json
 {
   "mcpServers": {
-    "model-invocation": {
-      "command": "node",
-      "args": ["node_modules/@modelcontextprotocol/server-model-invocation/dist/index.js"],
+    "zhipu-vision": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@z_ai/mcp-server"
+      ],
       "env": {
-        "OPENAI_API_KEY": "your-openai-api-key",
-        "ANTHROPIC_API_KEY": "your-anthropic-api-key"
+        "Z_AI_MODE": "ZHIPU"
       }
     }
   }
 }
 ```
 
-### 12. 图像处理
-- **名称**: Image Processing MCP Server
-- **功能**: 提供图像处理、分析和生成能力
-- **适用场景**: 图像编辑、计算机视觉
-- **安装方式**: `npm install @modelcontextprotocol/server-image-processing`
+### 13. 智谱AI网络搜索
+- **名称**: zhipu-web-search
+- **功能**: 提供智谱AI网络搜索服务
+- **适用场景**: 智能搜索、信息检索、实时问答
+- **连接类型**: HTTP
 - **配置示例**:
 ```json
 {
   "mcpServers": {
-    "image-processing": {
-      "command": "node",
-      "args": ["node_modules/@modelcontextprotocol/server-image-processing/dist/index.js"]
-    }
-  }
-}
-```
-
-## 系统管理类
-
-### 13. 系统监控
-- **名称**: System Monitoring MCP Server
-- **功能**: 提供系统资源监控、性能分析等功能
-- **适用场景**: 系统管理、性能优化
-- **安装方式**: `npm install @modelcontextprotocol/server-system-monitor`
-- **配置示例**:
-```json
-{
-  "mcpServers": {
-    "system-monitor": {
-      "command": "node",
-      "args": ["node_modules/@modelcontextprotocol/server-system-monitor/dist/index.js"]
-    }
-  }
-}
-```
-
-### 14. 日志分析
-- **名称**: Log Analysis MCP Server
-- **功能**: 提供日志收集、解析和分析功能
-- **适用场景**: 故障排查、系统审计
-- **安装方式**: `npm install @modelcontextprotocol/server-log-analysis`
-- **配置示例**:
-```json
-{
-  "mcpServers": {
-    "log-analysis": {
-      "command": "node",
-      "args": ["node_modules/@modelcontextprotocol/server-log-analysis/dist/index.js"],
-      "env": {
-        "LOG_PATH": "/path/to/log/directory"
+    "zhipu-web-search": {
+      "type": "http",
+      "url": "https://open.bigmodel.cn/api/mcp/web_search_prime/mcp",
+      "headers": {
+        "Authorization": "Bearer ${Z_AI_API_KEY}"
       }
     }
   }
 }
+```
+
+## 环境变量配置
+
+使用上述配置前，需要设置以下环境变量：
+
+```bash
+# 阿里云服务API密钥
+export DASHSCOPE_API_KEY="your-dashscope-api-key"
+
+# 智谱AI API密钥
+export Z_AI_API_KEY="your-zhipu-api-key"
 ```
 
 ## MCP资源网站
@@ -299,6 +303,7 @@ https://mcp.composio.dev/
 2. **安全考虑**: 对于涉及敏感数据的服务，确保配置适当的安全措施
 3. **性能优化**: 对于资源密集型服务，考虑资源限制和缓存策略
 4. **定期更新**: 保持MCP服务更新，以获取最新功能和安全修复
+5. **环境变量**: 确保所有需要API密钥的服务都正确配置了相应的环境变量
 
 ## 贡献指南
 
