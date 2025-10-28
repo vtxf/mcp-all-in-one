@@ -5,6 +5,7 @@
 
 import { McpClientsManager } from '../base/McpClientsManager';
 import { SelfConfigToolsManager } from '../base/SelfConfigToolsManager';
+import { BuiltinResourceProvider } from '../providers/BuiltinResourceProvider';
 import { BaseMcpClient } from '../../mcp-clients/base/BaseMcpClient';
 import { McpConfig } from '../../types/config';
 import { Logger } from '../../core/logger/Logger';
@@ -40,6 +41,7 @@ export class McpHandler {
     private aggregatedTools: any[] = [];
     private aggregatedResources: any[] = [];
     private aggregatedPrompts: any[] = [];
+    private builtinResourceProvider: BuiltinResourceProvider;
     private logger: Logger;
 
     /**
@@ -51,6 +53,7 @@ export class McpHandler {
         this.configPath = configPath;
         this.logger = new Logger('McpHandler');
         this.clientsManager = new McpClientsManager(config, this.logger);
+        this.builtinResourceProvider = new BuiltinResourceProvider();
     }
 
     /**
@@ -310,6 +313,16 @@ export class McpHandler {
     private async handleReadResource(params: any): Promise<any> {
         const { uri } = params;
 
+        // 检查是否是内置资源
+        if (uri.startsWith('builtin://')) {
+            if (await this.builtinResourceProvider.resourceExists(uri)) {
+                return await this.builtinResourceProvider.readResource(uri);
+            } else {
+                throw new Error(`内置资源 ${uri} 不存在`);
+            }
+        }
+
+        // 处理外部服务资源
         const resourceMapping = this.findResourceMapping(uri);
         if (!resourceMapping) {
             throw new Error(`资源 ${uri} 未找到`);
@@ -722,6 +735,17 @@ export class McpHandler {
     private async aggregateResources(): Promise<void> {
         this.logger.info('聚合资源列表');
         this.aggregatedResources = [];
+
+        // 添加内置资源
+        try {
+            const builtinResources = await this.builtinResourceProvider.listResources();
+            this.aggregatedResources.push(...builtinResources);
+            this.logger.info(`添加了 ${builtinResources.length} 个内置资源`);
+        } catch (error) {
+            this.logger.error(`获取内置资源失败`, {
+                error: error instanceof Error ? error.message : String(error)
+            });
+        }
 
         // 添加各服务的资源
         try {
