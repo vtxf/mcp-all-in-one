@@ -89,6 +89,8 @@ claude mcp add mcp-all-in-one -s user -- npx -y mcp-all-in-one@latest stdio
 }
 ```
 
+![](images/2025-10-28-15-43-53.png)
+
 ### 2. 直接聊天添加工具
 
 现在你可以直接跟AI说：
@@ -100,11 +102,18 @@ mcp-all-in-one中加个chrome-devtools：npx -y chrome-devtools-mcp@latest
 删掉mcp-all-in-one里的chrome-devtools工具
 ```
 
+![](images/2025-10-28-15-48-13.png)
+
+![](images/2025-10-28-15-48-51.png)
+
+
 ### 3. 重启MCP服务
 
 **注意：** 每次添加或删除MCP工具后，需要手动重启MCP服务才能生效。
 
 重启MCP服务，新工具就能用了！
+
+![](images/2025-10-28-15-50-27.png)
 
 ---
 
