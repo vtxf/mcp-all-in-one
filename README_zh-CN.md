@@ -5,6 +5,8 @@
 
 一个强大的MCP（Model Context Protocol）服务聚合器，能够将多个MCP服务合并为一个统一的MCP服务，并提供自我配置功能。
 
+[MCP配置太痛苦？试试mcp-all-in-one](./docs/MCP配置太痛苦？试试mcp-all-in-one%21.md)
+
 For English documentation, see [README.md](./README.md).
 
 ## ✨ 核心特性
