@@ -117,4 +117,8 @@ mcp-all-in-one中加个chrome-devtools：npx -y chrome-devtools-mcp@latest
 
 ---
 
+## 更多资料
+https://github.com/vtxf/mcp-all-in-one
+https://www.npmjs.com/package/mcp-all-in-one
+
 **试试mcp-all-in-one，告别MCP配置烦恼！**
