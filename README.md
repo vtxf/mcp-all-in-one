@@ -5,6 +5,7 @@
 
 A powerful MCP (Model Context Protocol) service aggregator that combines multiple MCP services into a single unified MCP service with self-configuration capabilities.
 
+一个强大的MCP（Model Context Protocol）服务聚合器，能够将多个MCP服务合并为一个统一的MCP服务，并提供自我配置功能。
 中文版请看 [README_zh-CN.md](./README_zh-CN.md).
 
 ## ✨ Core Features
