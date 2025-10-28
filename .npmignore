@@ -23,11 +23,11 @@ node_modules/
 scripts/
 
 # 文档和示例（保留README和必要的文档）
-docs/
 examples/
 *.md
 !README.md
 !CHANGELOG.md
+!README_zh-CN.md
 !LICENSE
 
 # 日志文件
