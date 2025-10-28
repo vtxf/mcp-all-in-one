@@ -9,6 +9,7 @@ import { BuiltinResourceProvider } from '../providers/BuiltinResourceProvider';
 import { BaseMcpClient } from '../../mcp-clients/base/BaseMcpClient';
 import { McpConfig } from '../../types/config';
 import { Logger } from '../../core/logger/Logger';
+import { getVersion } from '../../utils';
 
 /**
  * MCP请求接口
@@ -218,7 +219,7 @@ export class McpHandler {
             },
             serverInfo: {
                 name: "mcp-all-in-one",
-                version: "1.0.2"
+                version: getVersion()
             }
         };
     }

@@ -7,6 +7,7 @@ import { McpHandler } from '../core/McpHandler';
 import { McpClientsManager } from './McpClientsManager';
 import { McpConfig } from '../../types/config';
 import { Logger } from '../../core/logger/Logger';
+import { getVersion } from '../../utils';
 
 /**
  * MCP服务器基类
@@ -206,7 +207,7 @@ export abstract class BaseMcpServer {
     } {
         return {
             name: 'mcp-all-in-one',
-            version: '1.0.2',
+            version: getVersion(),
             serviceCount: Object.keys(this.config.mcpServers).length,
             uptime: process.uptime()
         };

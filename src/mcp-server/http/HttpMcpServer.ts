@@ -8,6 +8,7 @@ import express from 'express';
 import { createServer } from 'http';
 import { McpConfig } from '../../types/config';
 import { BaseMcpServer } from '../base/BaseMcpServer';
+import { getVersion } from '../../utils';
 
 /**
  * HTTP MCP服务器类
@@ -166,7 +167,7 @@ export class HttpMcpServer extends BaseMcpServer {
         this.app.get('/', (req, res) => {
             res.json({
                 name: 'mcp-all-in-one HTTP Server',
-                version: '1.0.2',
+                version: getVersion(),
                 status: 'running',
                 endpoints: {
                     mcp: '/mcp',
