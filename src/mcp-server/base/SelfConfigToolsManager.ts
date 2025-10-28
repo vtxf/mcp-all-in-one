@@ -194,8 +194,7 @@ export class SelfConfigToolsManager {
                 backupPath,
                 restartRequired,
                 restartMessage: restartRequired ?
-                    `MCP配置已更新。请重启mcp-all-in-one服务以应用新配置。使用以下命令重启:\n` +
-                    `mcp-all-in-one ${process.argv.slice(2).join(' ')}` :
+                    `MCP配置已更新。请重启mcp-all-in-one服务以应用新配置。` :
                     'MCP配置文件已更新',
                 errors: []
             };
