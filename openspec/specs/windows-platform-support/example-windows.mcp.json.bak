@@ -1,0 +1,136 @@
+{
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ],
+      "env": {},
+      "timeout": 60000,
+      "restart": true,
+      "windows": {
+        "useShellPrefix": true,
+        "timeout": 60000
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "S:/",
+        "C:/Users/vtxf/AppData/Local/Temp",
+        "C:/Users/vtxf/Downloads"
+      ],
+      "env": {},
+      "timeout": 30000,
+      "restart": true,
+      "windows": {
+        "useShellPrefix": true,
+        "workingDirectory": "C:/Users/vtxf/Documents"
+      }
+    },
+    "time-server": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-time",
+        "--local-timezone=Asia/Shanghai"
+      ],
+      "env": {},
+      "timeout": 60000,
+      "restart": true,
+      "windows": {
+        "useShellPrefix": true,
+        "environmentVariables": {
+          "PYTHON_PATH": "C:/Python39/python.exe",
+          "PYTHONHOME": "C:/Python39"
+        },
+        "timeout": 120000,
+        "retryAttempts": 2
+      }
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "chrome-devtools-mcp@latest"
+      ],
+      "env": {},
+      "timeout": 60000,
+      "restart": true,
+      "windows": {
+        "useShellPrefix": true,
+        "workingDirectory": "C:/Users/vtxf/Documents"
+      }
+    },
+    "custom-server": {
+      "command": "C:\\Program Files\\MyApp\\mcp-server.exe",
+      "args": [
+        "--config",
+        "C:\\Users\\vtxf\\mcp-config.json"
+      ],
+      "env": {
+        "API_KEY": "your-api-key-here"
+      },
+      "timeout": 45000,
+      "restart": true,
+      "windows": {
+        "useShellPrefix": false,
+        "forceAbsolute": true,
+        "workingDirectory": "C:\\MyApp"
+      }
+    },
+    "python-custom": {
+      "command": "python",
+      "args": [
+        "C:\\Projects\\my-mcp-server\\server.py",
+        "--port",
+        "8080"
+      ],
+      "env": {
+        "PYTHONPATH": "C:\\Projects\\my-mcp-server"
+      },
+      "timeout": 30000,
+      "restart": true,
+      "windows": {
+        "useShellPrefix": true,
+        "environmentVariables": {
+          "PYTHON_PATH": "C:\\Python39\\python.exe"
+        },
+        "retryAttempts": 3,
+        "retryDelay": 2000
+      }
+    },
+    "node-local": {
+      "command": "node",
+      "args": [
+        "./node_modules/.bin/mcp-server",
+        "--config",
+        "./config.json"
+      ],
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "cwd": "./my-project",
+      "timeout": 30000,
+      "restart": true,
+      "windows": {
+        "useShellPrefix": false,
+        "workingDirectory": "./my-project"
+      }
+    },
+    "git-integration": {
+      "command": "git",
+      "args": [
+        "mcp-server"
+      ],
+      "env": {},
+      "timeout": 20000,
+      "restart": false,
+      "windows": {
+        "useShellPrefix": true,
+        "workingDirectory": "C:/Projects/my-repo"
+      }
+    }
+  }
+}

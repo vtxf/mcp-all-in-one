@@ -1,0 +1,1209 @@
+### MCP API测试文件
+### 使用VS Code REST Client扩展进行测试
+### 安装扩展: https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+
+@baseUrl = http://localhost:3095
+@contentType = application/json
+
+### ==================== 基础端点测试 ====================
+
+### 1. 健康检查
+GET {{baseUrl}}/health
+
+### 2. 根路径信息
+GET {{baseUrl}}/
+
+### 3. 服务器状态检查
+GET {{baseUrl}}/status
+
+### ==================== MCP协议初始化测试 ====================
+
+### 4. Ping测试（连接健康检查）
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-ping-1",
+  "method": "ping"
+}
+
+### 5. HTTP模式初始化
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-init-1",
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "tools": {},
+      "resources": {},
+      "prompts": {},
+      "logging": {}
+    },
+    "clientInfo": {
+      "name": "rest-client-test",
+      "version": "1.0.0"
+    }
+  }
+}
+
+### 5. 初始化通知（无响应）
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "method": "notifications/initialized"
+}
+
+### ==================== 取消和进度通知测试 ====================
+
+### 6. 取消通知测试
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "method": "notifications/cancelled",
+  "params": {
+    "requestId": "http-cancel-1",
+    "reason": "用户取消请求"
+  }
+}
+
+### 7. 进度通知测试（客户端发送）
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "method": "notifications/progress",
+  "params": {
+    "progressToken": "progress-token-123",
+    "progress": 25,
+    "total": 100,
+    "message": "正在处理请求..."
+  }
+}
+
+### 8. 进度通知测试（带完整参数）
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "method": "notifications/progress",
+  "params": {
+    "progressToken": 456,
+    "progress": 75.5,
+    "total": 100,
+    "message": "即将完成处理"
+  }
+}
+
+### ==================== 工具协议测试 ====================
+
+### 9. 获取工具列表
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-tools-1",
+  "method": "tools/list",
+  "params": {}
+}
+
+### 10. 调用示例工具
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-tools-2",
+  "method": "tools/call",
+  "params": {
+    "name": "example_tool",
+    "arguments": {
+      "param1": "test_value_from_rest_client"
+    }
+  }
+}
+
+### 11. 调用不存在的工具（错误测试）
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-tools-3",
+  "method": "tools/call",
+  "params": {
+    "name": "nonexistent_tool",
+    "arguments": {}
+  }
+}
+
+### 12. 工具调用参数验证错误
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-tools-4",
+  "method": "tools/call",
+  "params": {
+    "name": "example_tool"
+    // 缺少必需的arguments参数
+  }
+}
+
+### 12.1. 工具列表变更通知测试（服务器发送）
+# 注意：这是服务器端发送的通知，这里仅作格式参考
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "method": "notifications/tools/list_changed"
+}
+
+### ==================== 自动补全功能测试 ====================
+
+### 12.2. 提示参数自动补全
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-completion-1",
+  "method": "completion/complete",
+  "params": {
+    "ref": {
+      "type": "ref/prompt",
+      "name": "example_prompt"
+    },
+    "argument": {
+      "name": "context",
+      "value": "test"
+    }
+  }
+}
+
+### 12.3. 资源模板参数自动补全
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-completion-2",
+  "method": "completion/complete",
+  "params": {
+    "ref": {
+      "type": "ref/resource",
+      "uri": "example://test/{id}"
+    },
+    "argument": {
+      "name": "id",
+      "value": "resource"
+    }
+  }
+}
+
+### 12.4. 带上下文的自动补全
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-completion-3",
+  "method": "completion/complete",
+  "params": {
+    "ref": {
+      "type": "ref/resource",
+      "uri": "example://test/{category}/{id}"
+    },
+    "argument": {
+      "name": "id",
+      "value": "test"
+    },
+    "context": {
+      "arguments": {
+        "category": "documents"
+      }
+    }
+  }
+}
+
+### ==================== 根目录管理测试 ====================
+
+### 12.5. 获取根目录列表
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-roots-1",
+  "method": "roots/list"
+}
+
+### 12.6. 根目录列表变更通知测试（服务器发送）
+# 注意：这是服务器端发送的通知，这里仅作格式参考
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "method": "notifications/roots/list_changed"
+}
+
+### ==================== 采样功能测试 ====================
+
+### 12.7. 创建消息采样请求
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-sampling-1",
+  "method": "sampling/createMessage",
+  "params": {
+    "messages": [
+      {
+        "role": "user",
+        "content": {
+          "type": "text",
+          "text": "请简单介绍一下人工智能"
+        }
+      }
+    ],
+    "modelPreferences": {
+      "hints": [
+        {
+          "name": "gpt-4"
+        }
+      ],
+      "costPriority": 0.5,
+      "speedPriority": 0.3,
+      "intelligencePriority": 0.8
+    },
+    "systemPrompt": "你是一个有用的AI助手。",
+    "includeContext": "thisServer",
+    "temperature": 0.7,
+    "maxTokens": 100,
+    "stopSequences": ["\n\n", "###"],
+    "metadata": {
+      "requestId": "test-sampling-1"
+    }
+  }
+}
+
+### 12.8. 采样请求（包含图像内容）
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-sampling-2",
+  "method": "sampling/createMessage",
+  "params": {
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "text",
+            "text": "请描述这张图片的内容"
+          },
+          {
+            "type": "image",
+            "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChAI9jU77yQAAAABJRU5ErkJggg==",
+            "mimeType": "image/png"
+          }
+        ]
+      }
+    ],
+    "maxTokens": 50
+  }
+}
+
+### ==================== 信息采集功能测试 ====================
+
+### 12.9. 创建信息采集请求（字符串类型）
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-elicitation-1",
+  "method": "elicitation/create",
+  "params": {
+    "message": "请提供您的姓名以便个性化服务",
+    "requestedSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "姓名",
+          "description": "请输入您的姓名",
+          "minLength": 1,
+          "maxLength": 50
+        }
+      },
+      "required": ["name"]
+    }
+  }
+}
+
+### 12.10. 创建信息采集请求（数字类型）
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-elicitation-2",
+  "method": "elicitation/create",
+  "params": {
+    "message": "请设置任务的超时时间（秒）",
+    "requestedSchema": {
+      "type": "object",
+      "properties": {
+        "timeout": {
+          "type": "integer",
+          "title": "超时时间",
+          "description": "任务执行的最大时间限制",
+          "minimum": 1,
+          "maximum": 3600
+        }
+      },
+      "required": ["timeout"]
+    }
+  }
+}
+
+### 12.11. 创建信息采集请求（布尔类型）
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-elicitation-3",
+  "method": "elicitation/create",
+  "params": {
+    "message": "是否启用调试模式？",
+    "requestedSchema": {
+      "type": "object",
+      "properties": {
+        "debugMode": {
+          "type": "boolean",
+          "title": "调试模式",
+          "description": "启用后将显示详细的调试信息",
+          "default": false
+        }
+      },
+      "required": ["debugMode"]
+    }
+  }
+}
+
+### 12.12. 创建信息采集请求（枚举类型）
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-elicitation-4",
+  "method": "elicitation/create",
+  "params": {
+    "message": "请选择日志级别",
+    "requestedSchema": {
+      "type": "object",
+      "properties": {
+        "logLevel": {
+          "type": "string",
+          "title": "日志级别",
+          "description": "选择系统日志记录的级别",
+          "enum": ["debug", "info", "warn", "error"],
+          "enumNames": ["调试", "信息", "警告", "错误"]
+        }
+      },
+      "required": ["logLevel"]
+    }
+  }
+}
+
+### 12.13. 创建信息采集请求（日期类型）
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-elicitation-5",
+  "method": "elicitation/create",
+  "params": {
+    "message": "请选择任务的截止日期",
+    "requestedSchema": {
+      "type": "object",
+      "properties": {
+        "deadline": {
+          "type": "string",
+          "title": "截止日期",
+          "description": "任务必须完成的日期",
+          "format": "date"
+        }
+      },
+      "required": ["deadline"]
+    }
+  }
+}
+
+### 12.14. 创建信息采集请求（URI类型）
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-elicitation-6",
+  "method": "elicitation/create",
+  "params": {
+    "message": "请提供回调URL",
+    "requestedSchema": {
+      "type": "object",
+      "properties": {
+        "callbackUrl": {
+          "type": "string",
+          "title": "回调URL",
+          "description": "用于接收异步结果回调的URL地址",
+          "format": "uri"
+        }
+      },
+      "required": ["callbackUrl"]
+    }
+  }
+}
+
+### 12.15. 创建信息采集请求（多字段组合）
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-elicitation-7",
+  "method": "elicitation/create",
+  "params": {
+    "message": "请配置数据库连接参数",
+    "requestedSchema": {
+      "type": "object",
+      "properties": {
+        "host": {
+          "type": "string",
+          "title": "主机地址",
+          "description": "数据库服务器地址",
+          "format": "uri"
+        },
+        "port": {
+          "type": "integer",
+          "title": "端口号",
+          "description": "数据库服务端口",
+          "minimum": 1,
+          "maximum": 65535,
+          "default": 5432
+        },
+        "database": {
+          "type": "string",
+          "title": "数据库名",
+          "description": "要连接的数据库名称",
+          "minLength": 1
+        },
+        "sslEnabled": {
+          "type": "boolean",
+          "title": "启用SSL",
+          "description": "是否启用SSL加密连接",
+          "default": true
+        }
+      },
+      "required": ["host", "database"]
+    }
+  }
+}
+
+### ==================== 资源协议测试 ====================
+
+### 13. 获取资源列表
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-resources-1",
+  "method": "resources/list",
+  "params": {}
+}
+
+### 14. 读取资源内容
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-resources-2",
+  "method": "resources/read",
+  "params": {
+    "uri": "example://test/resource1"
+  }
+}
+
+### 15. 获取资源模板列表
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-resources-3",
+  "method": "resources/templates/list",
+  "params": {}
+}
+
+### 16. 订阅资源更新
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-resources-4",
+  "method": "resources/subscribe",
+  "params": {
+    "uri": "example://test/resource1"
+  }
+}
+
+### 17. 取消订阅资源更新
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-resources-5",
+  "method": "resources/unsubscribe",
+  "params": {
+    "uri": "example://test/resource1"
+  }
+}
+
+### 18. 资源列表变更通知测试（服务器发送）
+# 注意：这是服务器端发送的通知，这里仅作格式参考
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "method": "notifications/resources/list_changed"
+}
+
+### 19. 资源更新通知测试（服务器发送）
+# 注意：这是服务器端发送的通知，这里仅作格式参考
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "method": "notifications/resources/updated",
+  "params": {
+    "uri": "example://test/resource1"
+  }
+}
+
+### ==================== 日志协议测试 ====================
+
+### 20. 设置日志级别 - debug
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-logging-1",
+  "method": "logging/setLevel",
+  "params": {
+    "level": "debug"
+  }
+}
+
+### 21. 设置日志级别 - info
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-logging-2",
+  "method": "logging/setLevel",
+  "params": {
+    "level": "info"
+  }
+}
+
+### 22. 设置日志级别 - warn
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-logging-3",
+  "method": "logging/setLevel",
+  "params": {
+    "level": "warn"
+  }
+}
+
+### 23. 设置日志级别 - error
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-logging-4",
+  "method": "logging/setLevel",
+  "params": {
+    "level": "error"
+  }
+}
+
+### 24. 无效日志级别测试 - should return error
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-logging-5",
+  "method": "logging/setLevel",
+  "params": {
+    "level": "invalid_level"
+  }
+}
+
+### 25. 缺少level参数测试 - should return error
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-logging-6",
+  "method": "logging/setLevel",
+  "params": {
+    // 缺少level参数
+  }
+}
+
+### 26. 空level参数测试 - should return error
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-logging-7",
+  "method": "logging/setLevel",
+  "params": {
+    "level": ""
+  }
+}
+
+### 27. null level参数测试 - should return error
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-logging-8",
+  "method": "logging/setLevel",
+  "params": {
+    "level": null
+  }
+}
+
+### 28. 日志消息通知测试（服务器发送）
+# 注意：这是服务器端发送的通知，这里仅作格式参考
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "method": "notifications/message",
+  "params": {
+    "level": "info",
+    "logger": "test-logger",
+    "data": "这是一条测试日志消息"
+  }
+}
+
+### 29. 日志消息通知测试（带对象数据）
+# 注意：这是服务器端发送的通知，这里仅作格式参考
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "method": "notifications/message",
+  "params": {
+    "level": "error",
+    "logger": "error-logger",
+    "data": {
+      "error": "测试错误",
+      "code": 500,
+      "details": "错误详细信息"
+    }
+  }
+}
+
+### 30. 测试日志级别设置后验证 - 先设置为debug，然后调用工具查看是否有debug日志
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-logging-9",
+  "method": "logging/setLevel",
+  "params": {
+    "level": "debug"
+  }
+}
+
+###
+
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-logging-10",
+  "method": "tools/list",
+  "params": {}
+}
+
+### 31. 测试日志级别设置后验证 - 设置为error，然后调用工具应该没有debug日志
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-logging-11",
+  "method": "logging/setLevel",
+  "params": {
+    "level": "error"
+  }
+}
+
+###
+
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-logging-12",
+  "method": "tools/list",
+  "params": {}
+}
+
+### ==================== 提示协议测试 ====================
+
+### 32. 获取提示列表
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-prompts-1",
+  "method": "prompts/list",
+  "params": {}
+}
+
+### 33. 获取特定提示
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-prompts-2",
+  "method": "prompts/get",
+  "params": {
+    "name": "example_prompt",
+    "arguments": {
+      "context": "这是从REST Client发送的测试上下文"
+    }
+  }
+}
+
+### 34. 提示列表变更通知测试（服务器发送）
+# 注意：这是服务器端发送的通知，这里仅作格式参考
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "method": "notifications/prompts/list_changed"
+}
+
+### ==================== 错误处理测试 ====================
+
+### 26. 无效的JSON-RPC方法
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-error-1",
+  "method": "invalid/method/name",
+  "params": {}
+}
+
+### 27. 缺少必需字段
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-error-2",
+  "method": "tools/list"
+  // 缺少params字段
+}
+
+### 28. 无效的协议版本
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-error-3",
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2020-01-01",
+    "capabilities": {},
+    "clientInfo": {
+      "name": "test-client",
+      "version": "1.0.0"
+    }
+  }
+}
+
+### 29. 格式错误的JSON
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-error-4",
+  "method": "tools/list",
+  "params": {
+    // 故意的JSON语法错误
+    "invalid": json
+  }
+}
+
+### ==================== HTTP协议特定测试 ====================
+
+### 30. 无效的Content-Type
+POST {{baseUrl}}/mcp
+Content-Type: text/plain
+
+这是一个无效的请求，应该返回415错误
+
+### 31. 缺少Content-Type头
+POST {{baseUrl}}/mcp
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-protocol-1",
+  "method": "tools/list",
+  "params": {}
+}
+
+### 32. 自定义请求头测试
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+X-Request-ID: rest-client-req-12345
+X-Client-Version: 1.0.0
+X-Test-Header: custom-value
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-protocol-2",
+  "method": "tools/list",
+  "params": {}
+}
+
+### ==================== 并发和性能测试 ====================
+
+### 33. 批量工具调用（性能测试）
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-perf-1",
+  "method": "tools/call",
+  "params": {
+    "name": "example_tool",
+    "arguments": {
+      "param1": "这是一个较长的测试参数，用于测试性能和大参数处理能力。包含中文字符和特殊符号：!@#$%^&*()_+-=[]{}|;:,.<>?"
+    }
+  }
+}
+
+### 34. 大量数据请求
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-perf-2",
+  "method": "tools/list",
+  "params": {
+    "filter": {
+      "category": "test",
+      "tags": ["performance", "large-data", "bulk-request", "stress-test"],
+      "limit": 1000,
+      "offset": 0,
+      "sort": "name",
+      "order": "asc"
+    }
+  }
+}
+
+### ==================== 安全测试 ====================
+
+### 35. XSS注入尝试
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-security-1",
+  "method": "tools/call",
+  "params": {
+    "name": "example_tool",
+    "arguments": {
+      "param1": "<script>alert('XSS测试')</script>"
+    }
+  }
+}
+
+### 36. SQL注入尝试
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-security-2",
+  "method": "tools/call",
+  "params": {
+    "name": "example_tool",
+    "arguments": {
+      "param1": "'; DROP TABLE users; --"
+    }
+  }
+}
+
+### 37. 超长字符串测试
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-security-3",
+  "method": "tools/call",
+  "params": {
+    "name": "example_tool",
+    "arguments": {
+      "param1": "这是一个非常长的字符串，用于测试服务器对超长输入的处理能力。{{#repeat 1000}}这是重复的内容。{{/repeat}}"
+    }
+  }
+}
+
+### ==================== CORS和跨域测试 ====================
+
+### 38. CORS预检请求
+OPTIONS {{baseUrl}}/mcp
+Origin: http://localhost:8080
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: Content-Type, X-Custom-Header
+
+### 39. 带Origin的POST请求
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+Origin: http://localhost:8080
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-cors-1",
+  "method": "tools/list",
+  "params": {}
+}
+
+### ==================== 认证和授权测试 ====================
+
+### 40. 带认证头的请求
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+Authorization: Bearer test-token-12345
+X-API-Key: test-api-key
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-auth-1",
+  "method": "tools/list",
+  "params": {}
+}
+
+### 41. 无效认证头
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+Authorization: Bearer invalid-token
+
+{
+  "jsonrpc": "2.0",
+  "id": "http-auth-2",
+  "method": "tools/list",
+  "params": {}
+}
+
+### ==================== 压力测试脚本 ====================
+
+### 42. 快速连续请求（用于手动压力测试）
+### 在浏览器开发者工具中复制以下代码并执行：
+/**
+for (let i = 0; i < 10; i++) {
+  fetch('http://localhost:3000/mcp', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      jsonrpc: '2.0',
+      id: `stress-test-${i}`,
+      method: 'tools/list',
+      params: {}
+    })
+  }).then(r => r.json()).then(console.log);
+}
+**/
+
+### ==================== 清理和重置测试 ====================
+
+### 43. 服务器重置（如果支持）
+POST {{baseUrl}}/reset
+Content-Type: {{contentType}}
+
+### 44. 强制垃圾回收（如果支持）
+POST {{baseUrl}}/admin/gc
+Content-Type: {{contentType}}
+Authorization: Bearer admin-token
+
+### ==================== 测试数据验证 ====================
+
+### 45. 验证服务器响应格式
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+
+{
+  "jsonrpc": "2.0",
+  "id": "validation-1",
+  "method": "tools/list",
+  "params": {}
+}
+
+### 预期响应验证：
+# - 状态码应为200
+# - Content-Type应为application/json
+# - 响应体应包含有效的JSON-RPC响应
+# - result字段应为对象，包含tools数组
+# - 每个工具应包含name、description、inputSchema字段
+
+### ==================== 环境变量测试 ====================
+
+### 46. 测试不同环境配置
+### 启动服务器时设置环境变量：
+# MCP_LOG_LEVEL=debug node dist/http-server.js
+# MCP_SERVER_MODE=production node dist/http-server.js
+# MCP_ENABLE_CORS=false node dist/http-server.js
+
+### ==================== 会话管理测试 ====================
+
+### 47. 会话状态保持测试
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+X-Session-ID: test-session-123
+
+{
+  "jsonrpc": "2.0",
+  "id": "session-1",
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": { "tools": {} },
+    "clientInfo": { "name": "session-test", "version": "1.0.0" }
+  }
+}
+
+###
+
+POST {{baseUrl}}/mcp
+Content-Type: {{contentType}}
+X-Session-ID: test-session-123
+
+{
+  "jsonrpc": "2.0",
+  "id": "session-2",
+  "method": "tools/list",
+  "params": {}
+}
+
+### ==================== 文件上传测试 ====================
+
+### 48. 多部分表单数据测试（如果支持）
+POST {{baseUrl}}/upload
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="test.txt"
+Content-Type: text/plain
+
+这是一个测试文件内容
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### ==================== WebSocket测试（如果支持） ====================
+
+### 49. WebSocket连接升级
+GET {{baseUrl}}/ws
+Connection: Upgrade
+Upgrade: websocket
+Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==
+Sec-WebSocket-Version: 13
+
+### ==================== 测试完成 ====================
+
+### 最后验证服务器状态
+GET {{baseUrl}}/health
+
+### 测试总结说明：
+#
+# 本测试文件包含了MCP HTTP服务器的全面测试用例，包括：
+#
+# 1. 基础端点测试 - 验证服务器基本功能
+# 2. MCP协议测试 - 验证完整的JSON-RPC协议实现
+# 3. 错误处理测试 - 验证各种错误情况的处理
+# 4. 性能测试 - 验证服务器在负载下的表现
+# 5. 安全测试 - 验证安全防护机制
+# 6. 协议特定测试 - 验证HTTP特有的功能
+#
+# 使用方法：
+# 1. 确保MCP HTTP服务器在localhost:3000运行
+# 2. 在VS Code中安装REST Client扩展
+# 3. 点击每个请求上方的"Send Request"按钮
+# 4. 查看响应结果和状态码
+#
+# 预期结果：
+# - 成功的请求应返回200状态码
+# - 错误情况应返回相应的错误状态码
+# - 响应格式应符合JSON-RPC 2.0规范
+#

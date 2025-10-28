@@ -1,0 +1,87 @@
+{
+    "name": "mcp-all-in-one",
+    "version": "1.1.0",
+    "description": "合并多个MCP服务为一个统一的MCP服务",
+    "main": "dist/index.js",
+    "bin": {
+        "mcp-all-in-one": "bin/mcp-all-in-one"
+    },
+    "engines": {
+        "node": ">=22.0.0"
+    },
+      "scripts": {
+        "build": "tsc",
+        "dev": "tsx src/index.ts",
+        "dev-stdio": "tsx src/index.ts stdio -c ./test-mcp-config.json",
+        "dev-stdio2": "tsx src/index.ts stdio -c ./example.mcp.json",
+        "dev-stdio-ext": "set NODE_OPTIONS=--inspect-brk && tsx src/index.ts stdio -c ./test-mcp-config.json",
+        "start": "node dist/index.js",
+        "start-stdio": "node dist/index.js stdio -c ./test-mcp-config.json",
+        "start-stdio-ext": "set NODE_OPTIONS=--inspect-brk && node dist/index.js stdio -c ./test-mcp-config.json",
+        "test": "jest --passWithNoTests",
+        "test:watch": "jest --watch",
+        "test:coverage": "jest --coverage",
+        "lint": "eslint src/**/*.ts",
+        "lint:fix": "eslint src/**/*.ts --fix",
+        "format": "prettier --write src/**/*.ts",
+        "dev:watch": "nodemon --exec tsx src/index.ts",
+        "prepublishOnly": "npm run build && npm test"
+    },
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.20.2",
+        "ajv": "^8.17.1",
+        "commander": "^14.0.1",
+        "express": "^5.0.1",
+        "winston": "^3.18.3"
+    },
+    "devDependencies": {
+        "@types/body-parser": "^1.19.6",
+        "@types/cors": "^2.8.19",
+        "@types/express": "^5.0.0",
+        "@types/node": "^24.9.1",
+        "@types/qs": "^6.14.0",
+        "@types/range-parser": "^1.2.7",
+        "@types/send": "^1.2.1",
+        "@types/serve-static": "^1.15.10",
+        "eslint": "^9.38.0",
+        "jest": "^30.2.0",
+        "nodemon": "^3.1.10",
+        "prettier": "^3.6.2",
+        "tsx": "^4.20.6",
+        "typescript": "^5.9.3"
+    },
+    "keywords": [
+        "mcp",
+        "model-context-protocol",
+        "proxy",
+        "ai",
+        "claude",
+        "mcp-server",
+        "mcp-client",
+        "mcp-proxy",
+        "mcp-aggregator"
+    ],
+    "author": "vtxf <vtxf@qq.com>",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/vtxf/mcp-all-in-one.git"
+    },
+    "bugs": {
+        "url": "https://github.com/vtxf/mcp-all-in-one/issues"
+    },
+    "homepage": "https://github.com/vtxf/mcp-all-in-one#readme",
+    "files": [
+        "dist",
+        "bin",
+        "docs",
+        "schemas",
+        "README.md",
+        "README_zh-CN.md",
+        "CHANGELOG.md",
+        "LICENSE"
+    ],
+    "publishConfig": {
+        "access": "public"
+    }
+}

@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+
+/**
+ * mcp-all-in-one 可执行文件入口
+ */
+
+// 设置环境变量以强制执行主函数
+process.env.MCP_ALL_IN_ONE_CLI = 'true';
+
+// 动态导入主模块
+require('../dist/index.js');

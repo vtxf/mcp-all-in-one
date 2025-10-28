@@ -1,0 +1,53 @@
+{
+    "mcpServers": {
+        "zhipu-web-search": {
+            "type": "http",
+            "url": "https://open.bigmodel.cn/api/mcp/web_search_prime/mcp",
+            "headers": {
+                "Authorization": "Bearer ${Z_AI_API_KEY}"
+            }
+        },
+        "context7": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@upstash/context7-mcp@latest"
+            ],
+            "env": {},
+            "timeout": 60000,
+            "restart": true
+        },
+        "Time": {
+            "command": "uvx",
+            "args": [
+                "mcp-server-time",
+                "--local-timezone=Asia/Shanghai"
+            ],
+            "env": {},
+            "timeout": 60000,
+            "restart": true
+        },
+        "Filesystem": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-filesystem",
+                "S:/",
+                "C:/Users/vtxf/AppData/Local/Temp",
+                "C:/Users/vtxf/Downloads"
+            ],
+            "env": {},
+            "timeout": 30000,
+            "restart": true
+        },
+        "chrome-devtools": {
+            "command": "npx",
+            "args": [
+                "chrome-devtools-mcp@latest"
+            ],
+            "env": {},
+            "timeout": 60000,
+            "restart": true
+        }
+    }
+}

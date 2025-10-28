@@ -1,0 +1,82 @@
+# 源代码目录（只发布编译后的代码）
+src/
+tsconfig.json
+
+# 测试文件
+test/
+tests/
+**/*.test.ts
+**/*.spec.ts
+jest.config.*
+coverage/
+
+# 开发工具配置
+.eslintrc.*
+.prettierrc.*
+.vscode/
+.idea/
+
+# 开发依赖
+node_modules/
+
+# 开发脚本
+scripts/
+
+# 文档和示例（保留README和必要的文档）
+docs/
+examples/
+*.md
+!README.md
+!CHANGELOG.md
+!LICENSE
+
+# 日志文件
+*.log
+logs/
+
+# 临时文件
+.tmp/
+.temp/
+.tmp-*/
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+
+# 编辑器文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Git相关
+.git/
+.gitignore
+
+# 私有配置
+.env
+.env.*
+*.local
+
+# 调试文件
+*.debug.js
+*.debug.map
+
+# 测试配置文件
+test-mcp-config.json
+test-simple.json
+
+# 开发目录
+.vtxf/
+.claude/
+todos/
+
+# CI/CD配置
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# 构建输出（除了dist目录）
+build/
+out/

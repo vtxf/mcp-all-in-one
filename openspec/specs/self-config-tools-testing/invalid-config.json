@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "invalid-service": {
+      "type": "invalid-type",
+      "timeout": -1000
+    }
+  }
+}

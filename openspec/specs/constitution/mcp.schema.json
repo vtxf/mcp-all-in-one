@@ -1,0 +1,229 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "vtxf/mcp-all-in-one/schema/mcpServers.schema.json",
+  "title": "MCP Servers Configuration Schema",
+  "description": "Schema for MCP server configurations",
+  "type": "object",
+  "required": ["mcpServers"],
+  "properties": {
+    "mcpServers": {
+      "type": "object",
+      "description": "MCP servers configuration object",
+      "patternProperties": {
+        "^[^\\s\\$\\{\\}]+$": {
+          "type": "object",
+          "description": "Individual MCP server configuration",
+          "oneOf": [
+            {
+              "$ref": "#/definitions/stdioServer"
+            },
+            {
+              "$ref": "#/definitions/httpServer"
+            },
+            {
+              "$ref": "#/definitions/sseServer"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "stdioServer": {
+      "type": "object",
+      "description": "STDIO MCP server configuration",
+      "required": [
+        "command"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Server type",
+          "const": "stdio"
+        },
+        "command": {
+          "type": "string",
+          "description": "Command to start the MCP server"
+        },
+        "args": {
+          "type": "array",
+          "description": "Command arguments",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "env": {
+          "type": "object",
+          "description": "Environment variables",
+          "patternProperties": {
+            "^[A-Z_][A-Z0-9_]*$": {
+              "type": "string",
+              "description": "Environment variable value"
+            }
+          },
+          "additionalProperties": false
+        },
+        "cwd": {
+          "type": "string",
+          "description": "Working directory",
+          "default": "."
+        },
+        "timeout": {
+          "type": "integer",
+          "description": "Connection timeout in milliseconds",
+          "minimum": 1000,
+          "maximum": 300000,
+          "default": 30000
+        },
+        "restart": {
+          "type": "boolean",
+          "description": "Auto restart on failure",
+          "default": true
+        },
+        "restartDelay": {
+          "type": "integer",
+          "description": "Delay before restart in milliseconds",
+          "minimum": 100,
+          "maximum": 60000,
+          "default": 5000
+        }
+      }
+    },
+    "httpServer": {
+      "type": "object",
+      "description": "HTTP MCP server configuration",
+      "required": [
+        "type",
+        "url"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Server type",
+          "const": "http"
+        },
+        "url": {
+          "type": "string",
+          "description": "HTTP server URL",
+          "format": "uri"
+        },
+        "headers": {
+          "type": "object",
+          "description": "HTTP headers",
+          "patternProperties": {
+            "^[^\\s\\$\\{\\}]+$": {
+              "type": "string",
+              "description": "Header value"
+            }
+          },
+          "additionalProperties": false
+        },
+        "timeout": {
+          "type": "integer",
+          "description": "Request timeout in milliseconds",
+          "minimum": 1000,
+          "maximum": 300000,
+          "default": 10000
+        },
+        "retries": {
+          "type": "integer",
+          "description": "Number of retry attempts",
+          "minimum": 0,
+          "maximum": 10,
+          "default": 3
+        },
+        "retryDelay": {
+          "type": "integer",
+          "description": "Delay between retries in milliseconds",
+          "minimum": 100,
+          "maximum": 60000,
+          "default": 1000
+        }
+      }
+    },
+    "sseServer": {
+      "type": "object",
+      "description": "SSE MCP server configuration",
+      "required": [
+        "type",
+        "url"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Server type",
+          "const": "sse"
+        },
+        "url": {
+          "type": "string",
+          "description": "SSE server URL",
+          "format": "uri"
+        },
+        "headers": {
+          "type": "object",
+          "description": "SSE connection headers",
+          "patternProperties": {
+            "^[^\\s\\$\\{\\}]+$": {
+              "type": "string",
+              "description": "Header value"
+            }
+          },
+          "additionalProperties": false
+        },
+        "reconnectInterval": {
+          "type": "integer",
+          "description": "Reconnection interval in milliseconds",
+          "minimum": 100,
+          "maximum": 300000,
+          "default": 1000
+        },
+        "maxRetries": {
+          "type": "integer",
+          "description": "Maximum reconnection attempts",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 5
+        },
+        "timeout": {
+          "type": "integer",
+          "description": "Connection timeout in milliseconds",
+          "minimum": 1000,
+          "maximum": 300000,
+          "default": 30000
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "title": "Complete MCP Configuration",
+      "description": "Example of a complete MCP configuration with multiple servers",
+      "mcpServers": {
+        "filesystem": {
+          "command": "npx",
+          "args": [
+            "@modelcontextprotocol/server-filesystem",
+            "."
+          ]
+        },
+        "http-api": {
+          "type": "http",
+          "url": "https://api.example.com/mcp",
+          "headers": {
+            "Authorization": "Bearer ${API_KEY}"
+          },
+          "timeout": 15000
+        },
+        "sse-events": {
+          "type": "sse",
+          "url": "http://localhost:9222/sse",
+          "reconnectInterval": 5000,
+          "maxRetries": 3
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "test-filesystem": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-filesystem", "/tmp"],
+      "env": {},
+      "timeout": 30000,
+      "restart": true
+    }
+  }
+}

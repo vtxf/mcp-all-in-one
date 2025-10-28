@@ -1,0 +1,777 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "vtxf/mcp-all-in-one/schema/cli.schema.json",
+  "title": "mcp-all-in-one CLI Parameters Schema",
+  "description": "Complete schema for mcp-all-in-one command line interface parameters",
+  "type": "object",
+  "properties": {
+    "global": {
+      "type": "object",
+      "description": "Global CLI configuration",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "CLI tool name",
+          "const": "mcp-all-in-one"
+        },
+        "version": {
+          "type": "string",
+          "description": "CLI tool version",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$"
+        },
+        "description": {
+          "type": "string",
+          "description": "CLI tool description",
+          "const": "MCP服务聚合代理工具"
+        },
+        "globalArguments": {
+          "type": "object",
+          "description": "Global arguments available for all commands",
+          "properties": {
+            "help": {
+              "type": "object",
+              "description": "Help argument",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "boolean"
+                },
+                "short": {
+                  "type": "string",
+                  "const": "h"
+                },
+                "description": {
+                  "type": "string",
+                  "const": "Display help information / 显示帮助信息"
+                }
+              },
+              "required": ["type", "short", "description"],
+              "additionalProperties": false
+            },
+            "version": {
+              "type": "object",
+              "description": "Version argument",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "boolean"
+                },
+                "short": {
+                  "type": "string",
+                  "const": "V"
+                },
+                "description": {
+                  "type": "string",
+                  "const": "Display version number / 显示版本号"
+                }
+              },
+              "required": ["type", "short", "description"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["help", "version"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["name", "version", "description", "globalArguments"],
+      "additionalProperties": false
+    },
+    "commands": {
+      "type": "object",
+      "description": "CLI command definitions",
+      "properties": {
+        "stdio": {
+          "type": "object",
+          "description": "STDIO mode command",
+          "properties": {
+            "name": {
+              "type": "string",
+              "const": "stdio"
+            },
+            "description": {
+              "type": "string",
+              "const": "STDIO mode operation / STDIO模式运行"
+            },
+            "usage": {
+              "type": "string",
+              "const": "stdio [options]"
+            },
+            "arguments": {
+              "type": "object",
+              "description": "STDIO command arguments",
+              "properties": {
+                "mcp-config": {
+                  "type": "object",
+                  "description": "MCP configuration file path",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "const": "MCP configuration file path / MCP配置文件路径"
+                    },
+                    "default": {
+                      "type": "string",
+                      "const": "~/.mcp-all-in-one/mcp.json"
+                    }
+                  },
+                  "required": ["type", "description", "default"],
+                  "additionalProperties": false
+                },
+                "log-level": {
+                  "type": "object",
+                  "description": "Log level for output",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "const": "Log level, options: error, warn, info, debug / 日志级别，可选值：error、warn、info、debug"
+                    },
+                    "default": {
+                      "type": "string",
+                      "const": "info"
+                    },
+                    "enum": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "const": ["error", "warn", "info", "debug"]
+                    }
+                  },
+                  "required": ["type", "description", "default", "enum"],
+                  "additionalProperties": false
+                },
+                "silent": {
+                  "type": "object",
+                  "description": "Enable silent mode",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "boolean"
+                    },
+                    "description": {
+                      "type": "string",
+                      "const": "Enable silent mode, completely disable log output / 启用静默模式，完全禁用日志输出"
+                    },
+                    "default": {
+                      "type": "boolean",
+                      "const": false
+                    }
+                  },
+                  "required": ["type", "description", "default"],
+                  "additionalProperties": false
+                }
+              },
+              "required": ["mcp-config"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["name", "description", "usage", "arguments"],
+          "additionalProperties": false
+        },
+        "http": {
+          "type": "object",
+          "description": "HTTP mode command",
+          "properties": {
+            "name": {
+              "type": "string",
+              "const": "http"
+            },
+            "description": {
+              "type": "string",
+              "const": "HTTP mode operation / HTTP模式运行"
+            },
+            "usage": {
+              "type": "string",
+              "const": "http [options]"
+            },
+            "arguments": {
+              "type": "object",
+              "description": "HTTP command arguments",
+              "properties": {
+                "mcp-config": {
+                  "type": "object",
+                  "description": "MCP configuration file path",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "const": "MCP configuration file path / MCP配置文件路径"
+                    },
+                    "default": {
+                      "type": "string",
+                      "const": "~/.mcp-all-in-one/mcp.json"
+                    }
+                  },
+                  "required": ["type", "description", "default"],
+                  "additionalProperties": false
+                },
+                "port": {
+                  "type": "object",
+                  "description": "HTTP service port",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "number"
+                    },
+                    "description": {
+                      "type": "string",
+                      "const": "HTTP service port / HTTP服务端口"
+                    },
+                    "default": {
+                      "type": "integer",
+                      "const": 3095
+                    },
+                    "minimum": {
+                      "type": "integer",
+                      "const": 1024
+                    },
+                    "maximum": {
+                      "type": "integer",
+                      "const": 65535
+                    }
+                  },
+                  "required": ["type", "description", "default", "minimum", "maximum"],
+                  "additionalProperties": false
+                },
+                "host": {
+                  "type": "object",
+                  "description": "HTTP service host",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "const": "HTTP service IP address / HTTP服务IP地址"
+                    },
+                    "default": {
+                      "type": "string",
+                      "const": "127.0.0.1"
+                    },
+                    "pattern": {
+                      "type": "string",
+                      "const": "^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$"
+                    }
+                  },
+                  "required": ["type", "description", "default", "pattern"],
+                  "additionalProperties": false
+                },
+                "cors": {
+                  "type": "object",
+                  "description": "Enable CORS support",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "boolean"
+                    },
+                    "description": {
+                      "type": "string",
+                      "const": "是否开启CORS"
+                    },
+                    "default": {
+                      "type": "boolean",
+                      "const": false
+                    }
+                  },
+                  "required": ["type", "description", "default"],
+                  "additionalProperties": false
+                },
+                "cors-origin": {
+                  "type": "object",
+                  "description": "CORS allowed origin",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "const": "CORS allowed origin / CORS允许的源地址"
+                    },
+                    "default": {
+                      "type": "string",
+                      "const": "*"
+                    }
+                  },
+                  "required": ["type", "description", "default"],
+                  "additionalProperties": false
+                },
+                "log-level": {
+                  "type": "object",
+                  "description": "Log level for output",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "const": "日志级别，可选值：error、warn、info、debug"
+                    },
+                    "default": {
+                      "type": "string",
+                      "const": "info"
+                    },
+                    "enum": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "const": ["error", "warn", "info", "debug"]
+                    }
+                  },
+                  "required": ["type", "description", "default", "enum"],
+                  "additionalProperties": false
+                },
+                "silent": {
+                  "type": "object",
+                  "description": "Enable silent mode",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "boolean"
+                    },
+                    "description": {
+                      "type": "string",
+                      "const": "启用静默模式，完全禁用日志输出"
+                    },
+                    "default": {
+                      "type": "boolean",
+                      "const": false
+                    }
+                  },
+                  "required": ["type", "description", "default"],
+                  "additionalProperties": false
+                }
+              },
+              "required": ["mcp-config", "port", "host", "cors"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["name", "description", "usage", "arguments"],
+          "additionalProperties": false
+        },
+        "sse": {
+          "type": "object",
+          "description": "SSE mode command",
+          "properties": {
+            "name": {
+              "type": "string",
+              "const": "sse"
+            },
+            "description": {
+              "type": "string",
+              "const": "SSE mode operation / SSE模式运行"
+            },
+            "usage": {
+              "type": "string",
+              "const": "sse [options]"
+            },
+            "arguments": {
+              "type": "object",
+              "description": "SSE command arguments",
+              "properties": {
+                "mcp-config": {
+                  "type": "object",
+                  "description": "MCP configuration file path",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "const": "MCP configuration file path / MCP配置文件路径"
+                    },
+                    "default": {
+                      "type": "string",
+                      "const": "~/.mcp-all-in-one/mcp.json"
+                    }
+                  },
+                  "required": ["type", "description", "default"],
+                  "additionalProperties": false
+                },
+                "port": {
+                  "type": "object",
+                  "description": "SSE service port",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "number"
+                    },
+                    "description": {
+                      "type": "string",
+                      "const": "SSE service port / SSE服务端口"
+                    },
+                    "default": {
+                      "type": "integer",
+                      "const": 3095
+                    },
+                    "minimum": {
+                      "type": "integer",
+                      "const": 1024
+                    },
+                    "maximum": {
+                      "type": "integer",
+                      "const": 65535
+                    }
+                  },
+                  "required": ["type", "description", "default", "minimum", "maximum"],
+                  "additionalProperties": false
+                },
+                "host": {
+                  "type": "object",
+                  "description": "SSE service host",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "const": "SSE service IP address / SSE服务IP地址"
+                    },
+                    "default": {
+                      "type": "string",
+                      "const": "127.0.0.1"
+                    },
+                    "pattern": {
+                      "type": "string",
+                      "const": "^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$"
+                    }
+                  },
+                  "required": ["type", "description", "default", "pattern"],
+                  "additionalProperties": false
+                },
+                "cors": {
+                  "type": "object",
+                  "description": "Enable CORS support",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "boolean"
+                    },
+                    "description": {
+                      "type": "string",
+                      "const": "是否开启CORS"
+                    },
+                    "default": {
+                      "type": "boolean",
+                      "const": false
+                    }
+                  },
+                  "required": ["type", "description", "default"],
+                  "additionalProperties": false
+                },
+                "log-level": {
+                  "type": "object",
+                  "description": "Log level for output",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "const": "日志级别，可选值：error、warn、info、debug"
+                    },
+                    "default": {
+                      "type": "string",
+                      "const": "info"
+                    },
+                    "enum": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "const": ["error", "warn", "info", "debug"]
+                    }
+                  },
+                  "required": ["type", "description", "default", "enum"],
+                  "additionalProperties": false
+                },
+                "silent": {
+                  "type": "object",
+                  "description": "Enable silent mode",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "boolean"
+                    },
+                    "description": {
+                      "type": "string",
+                      "const": "启用静默模式，完全禁用日志输出"
+                    },
+                    "default": {
+                      "type": "boolean",
+                      "const": false
+                    }
+                  },
+                  "required": ["type", "description", "default"],
+                  "additionalProperties": false
+                }
+              },
+              "required": ["mcp-config", "port", "host", "cors"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["name", "description", "usage", "arguments"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["stdio", "http", "sse"],
+      "additionalProperties": false
+    },
+    "globalFlags": {
+      "type": "object",
+      "description": "Global flag commands",
+      "properties": {
+        "validate-mcp-config": {
+          "type": "object",
+          "description": "Validate MCP configuration file",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "string"
+            },
+            "description": {
+              "type": "string",
+              "const": "Validate MCP configuration file / 验证MCP配置文件"
+            },
+            "arguments": {
+              "type": "object",
+              "description": "Command arguments",
+              "properties": {
+                "path": {
+                  "type": "object",
+                  "description": "Configuration file path",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "const": "Configuration file path / 配置文件路径"
+                    },
+                    "default": {
+                      "type": "string",
+                      "const": "~/.mcp-all-in-one/mcp.json"
+                    }
+                  },
+                  "required": ["type", "description", "default"],
+                  "additionalProperties": false
+                }
+              },
+              "required": ["path"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["type", "description", "arguments"],
+          "additionalProperties": false
+        },
+        "show-mcp-config-schema": {
+          "type": "object",
+          "description": "Show MCP configuration file schema",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "boolean"
+            },
+            "description": {
+              "type": "string",
+              "const": "Show MCP configuration file schema / 显示MCP配置文件schema"
+            }
+          },
+          "required": ["type", "description"],
+          "additionalProperties": false
+        },
+        "show-mcp-config": {
+          "type": "object",
+          "description": "Show MCP configuration file content",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "string"
+            },
+            "description": {
+              "type": "string",
+              "const": "Show MCP configuration file content / 显示MCP配置文件内容"
+            },
+            "arguments": {
+              "type": "object",
+              "description": "Command arguments",
+              "properties": {
+                "path": {
+                  "type": "object",
+                  "description": "Configuration file path",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "const": "Configuration file path / 配置文件路径"
+                    },
+                    "default": {
+                      "type": "string",
+                      "const": "~/.mcp-all-in-one/mcp.json"
+                    }
+                  },
+                  "required": ["type", "description", "default"],
+                  "additionalProperties": false
+                }
+              },
+              "required": ["path"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["type", "description", "arguments"],
+          "additionalProperties": false
+        },
+        "set-mcp-config": {
+          "type": "object",
+          "description": "Set MCP configuration file content",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "string"
+            },
+            "description": {
+              "type": "string",
+              "const": "Set MCP configuration file content / 设置MCP配置文件内容"
+            },
+            "arguments": {
+              "type": "object",
+              "description": "Command arguments",
+              "properties": {
+                "path": {
+                  "type": "object",
+                  "description": "Configuration file path",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "const": "Configuration file path / 配置文件路径"
+                    },
+                    "default": {
+                      "type": "string",
+                      "const": "~/.mcp-all-in-one/mcp.json"
+                    }
+                  },
+                  "required": ["type", "description", "default"],
+                  "additionalProperties": false
+                }
+              },
+              "required": ["path"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["type", "description", "arguments"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["validate-mcp-config", "show-mcp-config-schema", "show-mcp-config", "set-mcp-config"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["global", "commands", "globalFlags"],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "title": "STDIO Command Usage",
+      "description": "Example of STDIO command with arguments",
+      "command": "mcp-all-in-one stdio --mcp-config ./my-config.json",
+      "schema": {
+        "command": "stdio",
+        "arguments": {
+          "mcp-config": "./my-config.json"
+        }
+      }
+    },
+    {
+      "title": "STDIO Command with Logging",
+      "description": "Example of STDIO command with logging parameters",
+      "command": "mcp-all-in-one stdio --log-level debug --silent",
+      "schema": {
+        "command": "stdio",
+        "arguments": {
+          "log-level": "debug",
+          "silent": true
+        }
+      }
+    },
+    {
+      "title": "HTTP Command Usage",
+      "description": "Example of HTTP command with all arguments",
+      "command": "mcp-all-in-one http --port 8080 --host 0.0.0.0 --cors --cors-origin \"*\"",
+      "schema": {
+        "command": "http",
+        "arguments": {
+          "port": 8080,
+          "host": "0.0.0.0",
+          "cors": true,
+          "cors-origin": "*"
+        }
+      }
+    },
+    {
+      "title": "HTTP Command with Logging",
+      "description": "Example of HTTP command with logging parameters",
+      "command": "mcp-all-in-one http --log-level error",
+      "schema": {
+        "command": "http",
+        "arguments": {
+          "log-level": "error"
+        }
+      }
+    },
+    {
+      "title": "SSE Command Usage",
+      "description": "Example of SSE command with CORS enabled",
+      "command": "mcp-all-in-one sse --cors",
+      "schema": {
+        "command": "sse",
+        "arguments": {
+          "cors": true
+        }
+      }
+    },
+    {
+      "title": "SSE Command with Logging",
+      "description": "Example of SSE command with logging parameters",
+      "command": "mcp-all-in-one sse --log-level warn",
+      "schema": {
+        "command": "sse",
+        "arguments": {
+          "log-level": "warn"
+        }
+      }
+    },
+    {
+      "title": "Global Flag Usage",
+      "description": "Example of global flag commands",
+      "commands": [
+        "mcp-all-in-one --validate-mcp-config ./config.json",
+        "mcp-all-in-one --show-mcp-config-schema",
+        "mcp-all-in-one --show-mcp-config",
+        "mcp-all-in-one --set-mcp-config ./production.json"
+      ]
+    }
+  ]
+}

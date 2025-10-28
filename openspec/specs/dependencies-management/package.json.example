@@ -1,0 +1,80 @@
+{
+  "$schema": "./openspec/specs/dependencies-management/package.schema.json",
+  "name": "mcp-all-in-one",
+  "version": "1.0.0",
+  "description": "合并多个MCP服务为一个统一的MCP服务",
+  "main": "dist/index.js",
+  "bin": {
+    "mcp-all-in-one": "bin/mcp-all-in-one"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write src/**/*.ts",
+    "dev:watch": "nodemon --exec tsx src/index.ts",
+    "prepublishOnly": "npm run build && npm test",
+    "clean": "rimraf dist",
+    "prebuild": "npm run clean",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "proxy",
+    "aggregator",
+    "cli",
+    "typescript"
+  ],
+  "author": {
+    "name": "vtxf",
+    "email": "vtxf@qq.com",
+    "url": "https://u32.cn"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vtxf/mcp-all-in-one.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vtxf/mcp-all-in-one/issues"
+  },
+  "homepage": "https://github.com/vtxf/mcp-all-in-one#readme",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.20.2",
+    "commander": "^14.0.1",
+    "winston": "^3.18.3",
+    "ajv": "^8.17.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.9.1",
+    "typescript": "^5.9.3",
+    "tsx": "^4.20.6",
+    "jest": "^30.2.0",
+    "eslint": "^9.38.0",
+    "prettier": "^3.6.2",
+    "nodemon": "^3.1.10",
+    "rimraf": "^6.0.1",
+    "@types/jest": "^29.5.14"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "schemas",
+    "README.md",
+    "LICENSE"
+  ],
+  "config": {
+    "mcp": {
+      "defaultConfigPath": "~/.mcp-all-in-one/mcp.json"
+    }
+  }
+}

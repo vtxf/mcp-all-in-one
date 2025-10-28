@@ -1,0 +1,23 @@
+{
+    "mcpServers": {
+        "Time": {
+            "command": "uvx",
+            "args": [
+                "mcp-server-time",
+                "--local-timezone=Asia/Shanghai"
+            ],
+            "env": {},
+            "timeout": 60000,
+            "restart": true
+        },
+        "zhipu-web-search": {
+            "type": "http",
+            "url": "https://open.bigmodel.cn/api/mcp/web_search_prime/mcp",
+            "headers": {
+                "Authorization": "Bearer ${Z_AI_API_KEY}"
+            },
+            "timeout": 30000,
+            "restart": true
+        }
+    }
+}

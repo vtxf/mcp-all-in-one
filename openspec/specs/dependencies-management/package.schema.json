@@ -1,0 +1,365 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mcp-all-in-one.org/package.schema.json",
+  "title": "MCP All-in-One Package Configuration Schema",
+  "description": "JSON Schema for validating package.json configuration of mcp-all-in-one project",
+  "type": "object",
+  "required": [
+    "name",
+    "version",
+    "description",
+    "main",
+    "engines",
+    "scripts",
+    "dependencies",
+    "devDependencies"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema reference"
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^mcp-all-in-one$",
+      "description": "项目名称，必须为mcp-all-in-one"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "版本号，遵循语义化版本规范"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10,
+      "description": "项目描述，至少10个字符"
+    },
+    "main": {
+      "type": "string",
+      "pattern": "^dist/.*\\.js$",
+      "description": "主入口文件，必须位于dist目录下"
+    },
+    "bin": {
+      "type": "object",
+      "description": "命令行工具配置",
+      "required": ["mcp-all-in-one"],
+      "properties": {
+        "mcp-all-in-one": {
+          "type": "string",
+          "pattern": "^bin/.*",
+          "description": "命令行工具入口文件路径"
+        }
+      },
+      "additionalProperties": false
+    },
+    "engines": {
+      "type": "object",
+      "description": "运行环境要求",
+      "required": ["node"],
+      "properties": {
+        "node": {
+          "type": "string",
+          "pattern": "^>=22\\.0\\.0$",
+          "description": "Node.js版本要求，必须为22.0.0或更高"
+        }
+      },
+      "additionalProperties": false
+    },
+    "scripts": {
+      "type": "object",
+      "description": "npm脚本配置",
+      "required": [
+        "build",
+        "dev",
+        "start",
+        "test",
+        "lint",
+        "format"
+      ],
+      "properties": {
+        "build": {
+          "type": "string",
+          "pattern": "^tsc$",
+          "description": "构建脚本，必须使用tsc"
+        },
+        "dev": {
+          "type": "string",
+          "pattern": "^tsx src/index\\.ts$",
+          "description": "开发脚本，必须使用tsx"
+        },
+        "start": {
+          "type": "string",
+          "pattern": "^node dist/index\\.js$",
+          "description": "启动脚本，运行编译后的代码"
+        },
+        "test": {
+          "type": "string",
+          "pattern": "^jest$",
+          "description": "测试脚本，必须使用jest"
+        },
+        "test:watch": {
+          "type": "string",
+          "pattern": "^jest --watch$",
+          "description": "监听模式测试"
+        },
+        "test:coverage": {
+          "type": "string",
+          "pattern": "^jest --coverage$",
+          "description": "测试覆盖率报告"
+        },
+        "lint": {
+          "type": "string",
+          "pattern": "^eslint src/\\*\\*/\\*\\.ts$",
+          "description": "代码检查脚本"
+        },
+        "lint:fix": {
+          "type": "string",
+          "pattern": "^eslint src/\\*\\*/\\*\\.ts --fix$",
+          "description": "自动修复代码问题"
+        },
+        "format": {
+          "type": "string",
+          "pattern": "^prettier --write src/\\*\\*/\\*\\.ts$",
+          "description": "代码格式化脚本"
+        },
+        "dev:watch": {
+          "type": "string",
+          "pattern": "^nodemon --exec tsx src/index\\.ts$",
+          "description": "开发监听模式"
+        },
+        "prepublishOnly": {
+          "type": "string",
+          "pattern": "^npm run build && npm test$",
+          "description": "发布前准备脚本"
+        }
+      },
+      "additionalProperties": {
+        "type": "string",
+        "description": "其他可选脚本"
+      }
+    },
+    "keywords": {
+      "type": "array",
+      "description": "项目关键词",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 3,
+      "contains": [
+        {
+          "const": "mcp"
+        },
+        {
+          "const": "model-context-protocol"
+        },
+        {
+          "const": "typescript"
+        }
+      ]
+    },
+    "author": {
+      "type": "object",
+      "description": "作者信息",
+      "required": ["name", "email"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "vtxf",
+          "description": "作者姓名"
+        },
+        "email": {
+          "type": "string",
+          "pattern": "^[^@]+@[^@]+\\.[^@]+$",
+          "description": "作者邮箱"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "作者网站"
+        }
+      },
+      "additionalProperties": false
+    },
+    "license": {
+      "type": "string",
+      "enum": ["MIT", "Apache-2.0", "ISC"],
+      "description": "开源许可证"
+    },
+    "repository": {
+      "type": "object",
+      "description": "代码仓库信息",
+      "required": ["type", "url"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "git",
+          "description": "仓库类型"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "仓库URL"
+        }
+      },
+      "additionalProperties": false
+    },
+    "dependencies": {
+      "type": "object",
+      "description": "生产依赖库",
+      "required": [
+        "@modelcontextprotocol/sdk",
+        "commander",
+        "winston",
+        "ajv"
+      ],
+      "properties": {
+        "@modelcontextprotocol/sdk": {
+          "type": "string",
+          "pattern": "^\\^1\\.20\\.\\d+$",
+          "description": "MCP协议SDK，版本必须为1.20.x"
+        },
+        "commander": {
+          "type": "string",
+          "pattern": "^\\^14\\.\\d+\\.\\d+$",
+          "description": "命令行框架，版本必须为14.x"
+        },
+        "winston": {
+          "type": "string",
+          "pattern": "^\\^3\\.\\d+\\.\\d+$",
+          "description": "日志系统，版本必须为3.x"
+        },
+        "ajv": {
+          "type": "string",
+          "pattern": "^\\^8\\.\\d+\\.\\d+$",
+          "description": "JSON Schema验证器，版本必须为8.x"
+        }
+      },
+      "additionalProperties": false,
+      "description": "只允许指定的核心依赖库，禁止添加其他生产依赖"
+    },
+    "devDependencies": {
+      "type": "object",
+      "description": "开发依赖库",
+      "required": [
+        "@types/node",
+        "typescript",
+        "tsx",
+        "jest",
+        "eslint",
+        "prettier",
+        "nodemon"
+      ],
+      "properties": {
+        "@types/node": {
+          "type": "string",
+          "pattern": "^\\^24\\.\\d+\\.\\d+$",
+          "description": "Node.js类型定义，版本必须为24.x匹配Node 22"
+        },
+        "typescript": {
+          "type": "string",
+          "pattern": "^\\^5\\.\\d+\\.\\d+$",
+          "description": "TypeScript编译器，版本必须为5.x"
+        },
+        "tsx": {
+          "type": "string",
+          "pattern": "^\\^4\\.\\d+\\.\\d+$",
+          "description": "TypeScript执行器，版本必须为4.x"
+        },
+        "jest": {
+          "type": "string",
+          "pattern": "^\\^30\\.\\d+\\.\\d+$",
+          "description": "测试框架，版本必须为30.x"
+        },
+        "eslint": {
+          "type": "string",
+          "pattern": "^\\^9\\.\\d+\\.\\d+$",
+          "description": "代码检查工具，版本必须为9.x"
+        },
+        "prettier": {
+          "type": "string",
+          "pattern": "^\\^3\\.\\d+\\.\\d+$",
+          "description": "代码格式化工具，版本必须为3.x"
+        },
+        "nodemon": {
+          "type": "string",
+          "pattern": "^\\^3\\.\\d+\\.\\d+$",
+          "description": "自动重启工具，版本必须为3.x"
+        },
+        "rimraf": {
+          "type": "string",
+          "pattern": "^\\^6\\.\\d+\\.\\d+$",
+          "description": "文件删除工具，版本必须为6.x"
+        },
+        "@types/jest": {
+          "type": "string",
+          "pattern": "^\\^29\\.\\d+\\.\\d+$",
+          "description": "Jest类型定义，版本必须为29.x"
+        }
+      },
+      "additionalProperties": false,
+      "description": "只允许指定的开发依赖库"
+    },
+    "files": {
+      "type": "array",
+      "description": "发布时包含的文件",
+      "items": {
+        "type": "string",
+        "enum": [
+          "dist",
+          "bin",
+          "schemas",
+          "README.md",
+          "LICENSE"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "config": {
+      "type": "object",
+      "description": "项目配置",
+      "properties": {
+        "mcp": {
+          "type": "object",
+          "description": "MCP相关配置",
+          "properties": {
+            "defaultConfigPath": {
+              "type": "string",
+              "pattern": "^~/.mcp-all-in-one/mcp\\.json$",
+              "description": "默认MCP配置文件路径"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "$comment": "完整的package.json示例",
+      "name": "mcp-all-in-one",
+      "version": "1.0.0",
+      "description": "合并多个MCP服务为一个统一的MCP服务",
+      "main": "dist/index.js",
+      "engines": {
+        "node": ">=22.0.0"
+      },
+      "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.20.2",
+        "commander": "^14.0.1",
+        "winston": "^3.18.3",
+        "ajv": "^8.17.1"
+      },
+      "devDependencies": {
+        "@types/node": "^24.9.1",
+        "typescript": "^5.9.3",
+        "tsx": "^4.20.6",
+        "jest": "^30.2.0",
+        "eslint": "^9.38.0",
+        "prettier": "^3.6.2",
+        "nodemon": "^3.1.10"
+      }
+    }
+  ]
+}

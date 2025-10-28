@@ -1,0 +1,271 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "vtxf/mcps-proxy/schema/mcp-with-windows.schema.json",
+  "title": "MCP Configuration Schema with Windows Support",
+  "description": "Extended MCP server configuration schema with Windows platform support",
+  "type": "object",
+  "patternProperties": {
+    "^[^\\s\\$\\{\\}]+$": {
+      "type": "object",
+      "description": "Individual MCP server configuration",
+      "oneOf": [
+        {
+          "$ref": "#/definitions/stdioServer"
+        },
+        {
+          "$ref": "#/definitions/httpServer"
+        },
+        {
+          "$ref": "#/definitions/sseServer"
+        }
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "stdioServer": {
+      "type": "object",
+      "description": "STDIO MCP server configuration with Windows support",
+      "required": [
+        "command"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Server type",
+          "const": "stdio"
+        },
+        "command": {
+          "type": "string",
+          "description": "Command to start the MCP server",
+          "examples": ["npx", "python", "C:\\Program Files\\app\\server.exe"]
+        },
+        "args": {
+          "type": "array",
+          "description": "Command arguments",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "examples": [
+            ["-y", "@modelcontextprotocol/server-filesystem", "/"],
+            ["mcp-server-time", "--local-timezone=Asia/Shanghai"]
+          ]
+        },
+        "env": {
+          "type": "object",
+          "description": "Environment variables (cross-platform)",
+          "patternProperties": {
+            "^[A-Z_][A-Z0-9_]*$": {
+              "type": "string",
+              "description": "Environment variable value"
+            }
+          },
+          "additionalProperties": false,
+          "examples": {
+            "NODE_ENV": "production",
+            "API_KEY": "your-api-key"
+          }
+        },
+        "cwd": {
+          "type": "string",
+          "description": "Working directory (cross-platform)",
+          "default": ".",
+          "examples": ["./project", "/home/user/mcp"]
+        },
+        "timeout": {
+          "type": "integer",
+          "description": "Connection timeout in milliseconds (global)",
+          "minimum": 1000,
+          "maximum": 300000,
+          "default": 30000
+        },
+        "restart": {
+          "type": "boolean",
+          "description": "Auto restart on failure",
+          "default": true
+        },
+        "restartDelay": {
+          "type": "integer",
+          "description": "Delay before restart in milliseconds",
+          "minimum": 100,
+          "maximum": 60000,
+          "default": 5000
+        },
+        "windows": {
+          "type": "object",
+          "description": "Windows platform-specific configuration",
+          "$ref": "windows-config.schema.json"
+        }
+      }
+    },
+    "httpServer": {
+      "type": "object",
+      "description": "HTTP MCP server configuration",
+      "required": [
+        "type",
+        "url"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Server type",
+          "const": "http"
+        },
+        "url": {
+          "type": "string",
+          "description": "HTTP server URL",
+          "format": "uri"
+        },
+        "headers": {
+          "type": "object",
+          "description": "HTTP headers",
+          "patternProperties": {
+            "^[^\\s\\$\\{\\}]+$": {
+              "type": "string",
+              "description": "Header value"
+            }
+          },
+          "additionalProperties": false
+        },
+        "timeout": {
+          "type": "integer",
+          "description": "Request timeout in milliseconds",
+          "minimum": 1000,
+          "maximum": 300000,
+          "default": 10000
+        },
+        "retries": {
+          "type": "integer",
+          "description": "Number of retry attempts",
+          "minimum": 0,
+          "maximum": 10,
+          "default": 3
+        },
+        "retryDelay": {
+          "type": "integer",
+          "description": "Delay between retries in milliseconds",
+          "minimum": 100,
+          "maximum": 60000,
+          "default": 1000
+        }
+      }
+    },
+    "sseServer": {
+      "type": "object",
+      "description": "SSE MCP server configuration",
+      "required": [
+        "type",
+        "url"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Server type",
+          "const": "sse"
+        },
+        "url": {
+          "type": "string",
+          "description": "SSE server URL",
+          "format": "uri"
+        },
+        "headers": {
+          "type": "object",
+          "description": "SSE connection headers",
+          "patternProperties": {
+            "^[^\\s\\$\\{\\}]+$": {
+              "type": "string",
+              "description": "Header value"
+            }
+          },
+          "additionalProperties": false
+        },
+        "reconnectInterval": {
+          "type": "integer",
+          "description": "Reconnection interval in milliseconds",
+          "minimum": 100,
+          "maximum": 300000,
+          "default": 1000
+        },
+        "maxRetries": {
+          "type": "integer",
+          "description": "Maximum reconnection attempts",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 5
+        },
+        "timeout": {
+          "type": "integer",
+          "description": "Connection timeout in milliseconds",
+          "minimum": 1000,
+          "maximum": 300000,
+          "default": 30000
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "title": "STDIO Server with Windows Support",
+      "description": "Example of a stdio MCP server with Windows platform configuration",
+      "server": {
+        "command": "npx",
+        "args": [
+          "@modelcontextprotocol/server-filesystem",
+          "."
+        ],
+        "windows": {
+          "useShellPrefix": true,
+          "shell": "pwsh",
+          "fallbackToCmd": true,
+          "executionPolicy": "RemoteSigned"
+        }
+      }
+    },
+    {
+      "title": "Python Server with Windows Configuration",
+      "description": "Example of a Python-based MCP server with Windows-specific settings",
+      "server": {
+        "command": "uvx",
+        "args": [
+          "mcp-server-time",
+          "--local-timezone=Asia/Shanghai"
+        ],
+        "windows": {
+          "useShellPrefix": true,
+          "shell": "pwsh",
+          "environmentVariables": {
+            "PYTHON_PATH": "C:\\Python39\\python.exe"
+          },
+          "timeout": 120000
+        }
+      }
+    },
+    {
+      "title": "Absolute Path Server (No Shell Prefix)",
+      "description": "Example of a server using absolute path, no shell prefix needed",
+      "server": {
+        "command": "C:\\Program Files\\MyApp\\mcp-server.exe",
+        "args": [
+          "--config",
+          "config.json"
+        ],
+        "windows": {
+          "useShellPrefix": false
+        }
+      }
+    },
+    {
+      "title": "HTTP Server (No Windows Config Needed)",
+      "description": "Example of HTTP server, no Windows-specific configuration required",
+      "server": {
+        "type": "http",
+        "url": "https://api.example.com/mcp",
+        "headers": {
+          "Authorization": "Bearer ${API_KEY}"
+        },
+        "timeout": 15000
+      }
+    }
+  ]
+}
