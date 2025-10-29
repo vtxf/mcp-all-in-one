@@ -201,7 +201,7 @@ export class McpHandler {
      */
     private async handleInitialize(): Promise<any> {
         return {
-            protocolVersion: "2024-11-05",
+            protocolVersion: "2025-06-18",
             capabilities: {
                 tools: {
                     listChanged: true
@@ -220,7 +220,8 @@ export class McpHandler {
             serverInfo: {
                 name: "mcp-all-in-one",
                 version: getVersion()
-            }
+            },
+            instructions: "mcp-all-in-one 是一个MCP协议聚合器，可以将多个MCP服务合并为一个统一的MCP服务。支持配置管理、工具聚合、资源聚合和提示聚合功能。"
         };
     }
 
