@@ -3,10 +3,11 @@
  * 根据服务配置创建对应的MCP客户端实例
  */
 
-import { McpServerConfig, McpServerType, StdioServerConfig, HttpServerConfig } from '../types/config';
+import { McpServerConfig, McpServerType, StdioServerConfig, HttpServerConfig, SseServerConfig } from '../types/config';
 import { BaseMcpClient } from './base/BaseMcpClient';
 import { StdioMcpClient } from './stdio/StdioMcpClient';
 import { HttpMcpClient } from './http/HttpMcpClient';
+import { SseMcpClient } from './sse/SseMcpClient';
 import { Logger } from '../core/logger/Logger';
 
 /**
@@ -32,6 +33,9 @@ export class McpClientFactory {
 
             case McpServerType.HTTP:
                 return new HttpMcpClient(serviceName, serviceConfig as HttpServerConfig);
+
+            case McpServerType.SSE:
+                return new SseMcpClient(serviceName, serviceConfig as SseServerConfig);
 
             default:
                 throw new Error(`不支持的服务器类型: ${serverType}`);
@@ -97,6 +101,15 @@ export class McpClientFactory {
                     errors.push('HTTP类型服务器必须提供url字段');
                 } else if (!this.isValidUrl(httpConfig.url)) {
                     errors.push('HTTP类型服务器的url格式无效');
+                }
+                break;
+
+            case McpServerType.SSE:
+                const sseConfig = config as SseServerConfig;
+                if (!sseConfig.url) {
+                    errors.push('SSE类型服务器必须提供url字段');
+                } else if (!this.isValidUrl(sseConfig.url)) {
+                    errors.push('SSE类型服务器的url格式无效');
                 }
                 break;
         }

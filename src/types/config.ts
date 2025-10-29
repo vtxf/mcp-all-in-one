@@ -7,7 +7,8 @@
  */
 export enum McpServerType {
     STDIO = 'stdio',
-    HTTP = 'http'
+    HTTP = 'http',
+    SSE = 'sse'
 }
 
 /**
@@ -31,9 +32,18 @@ export interface HttpServerConfig {
 }
 
 /**
+ * SSE类型MCP服务器配置
+ */
+export interface SseServerConfig {
+    type: McpServerType.SSE;
+    url: string;
+    headers?: Record<string, string>;
+}
+
+/**
  * MCP服务器配置联合类型
  */
-export type McpServerConfig = StdioServerConfig | HttpServerConfig;
+export type McpServerConfig = StdioServerConfig | HttpServerConfig | SseServerConfig;
 
 /**
  * MCP服务器配置集合

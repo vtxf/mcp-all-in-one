@@ -6,6 +6,7 @@
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js';
 import { McpServerConfig, McpServerType } from '../../types/config';
 import { Logger } from '../../core/logger/Logger';
 import { getVersion } from '../../utils';
@@ -374,6 +375,8 @@ export abstract class BaseMcpClient {
                 return this.createStdioTransport();
             case McpServerType.HTTP:
                 return this.createHttpTransport();
+            case McpServerType.SSE:
+                return this.createSseTransport();
 
             default:
                 throw new Error(`不支持的传输类型: ${transportType}`);
@@ -391,5 +394,11 @@ export abstract class BaseMcpClient {
      * @returns HTTP传输实例
      */
     protected abstract createHttpTransport(): StreamableHTTPClientTransport;
+
+    /**
+     * 创建SSE传输
+     * @returns SSE传输实例
+     */
+    protected abstract createSseTransport(): SSEClientTransport;
 
     }
