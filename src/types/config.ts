@@ -31,9 +31,6 @@ export interface HttpServerConfig {
     type: McpServerType.HTTP;
     url: string;
     headers?: Record<string, string>;
-    timeout?: number;
-    retries?: number;
-    retryDelay?: number;
 }
 
 /**

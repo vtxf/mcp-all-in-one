@@ -309,13 +309,11 @@ Configure primary and backup services to achieve high availability:
     "mcpServers": {
         "primary-search": {
             "type": "http",
-            "url": "https://primary.example.com/mcp",
-            "timeout": 5000
+            "url": "https://primary.example.com/mcp"
         },
         "backup-search": {
             "type": "http",
-            "url": "https://backup.example.com/mcp",
-            "timeout": 5000
+            "url": "https://backup.example.com/mcp"
         }
     }
 }

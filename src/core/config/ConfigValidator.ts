@@ -247,18 +247,7 @@ export class ConfigValidator {
             }
         }
 
-        if (config.retries !== undefined) {
-            if (typeof config.retries !== 'number' ||
-                config.retries < 0 ||
-                config.retries > 10) {
-                errors.push({
-                    path: `${path}.retries`,
-                    message: 'retries必须是0-10之间的数字',
-                    value: config.retries
-                });
-            }
-        }
-    }
+      }
 
     
     /**

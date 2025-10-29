@@ -15,9 +15,7 @@
             "url": "https://open.bigmodel.cn/api/mcp/web_search_prime/mcp",
             "headers": {
                 "Authorization": "Bearer ${Z_AI_API_KEY}"
-            },
-            "timeout": 30000,
-            "restart": true
+            }
         }
     }
 }

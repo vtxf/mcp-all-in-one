@@ -181,8 +181,7 @@ After starting mcp-all-in-one, the following tools are automatically available:
       "url": "https://api.example.com/mcp",
       "headers": {
         "Authorization": "Bearer ${API_KEY}"
-      },
-      "timeout": 5000
+      }
     }
   }
 }
@@ -211,8 +210,7 @@ After starting mcp-all-in-one, the following tools are automatically available:
       "url": "https://api.example.com/mcp",
       "headers": {
         "Authorization": "Bearer ${API_KEY}"
-      },
-      "timeout": 5000
+      }
     }
   }
 }

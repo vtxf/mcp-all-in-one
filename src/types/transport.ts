@@ -65,10 +65,6 @@ export interface HttpTransportConnection extends TransportConnection {
     url: string;
     /** 请求头 */
     headers?: Record<string, string>;
-    /** 超时时间 */
-    timeout: number;
-    /** 重试次数 */
-    retries: number;
 }
 
 /**

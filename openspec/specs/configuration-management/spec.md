@@ -27,10 +27,7 @@
       "url": "https://api.example.com/mcp",
       "headers": {
         "Authorization": "Bearer ${API_KEY}"
-      },
-      "timeout": 10000,
-      "retries": 3,
-      "retryDelay": 1000
+      }
     },
     "browser": {
       "type": "sse",
@@ -39,8 +36,7 @@
         "User-Agent": "mcp-all-in-one/1.0.0"
       },
       "reconnectInterval": 1000,
-      "maxRetries": 5,
-      "timeout": 30000
+      "maxRetries": 5
     }
   }
 }
@@ -88,10 +84,7 @@
   "headers": {
     "Authorization": "Bearer ${API_KEY}",
     "Content-Type": "application/json"
-  },
-  "timeout": 10000,
-  "retries": 3,
-  "retryDelay": 1000
+  }
 }
 ```
 
@@ -100,9 +93,6 @@
 | type | string | - | 是 | 服务器类型，固定为"http" |
 | url | string | - | 是 | 服务URL，必须是有效的URI格式 |
 | headers | object | {} | 否 | HTTP请求头，只允许字母、数字、下划线、连字符 |
-| timeout | number | 10000 | 否 | 请求超时(毫秒)，范围1000-300000 |
-| retries | number | 3 | 否 | 重试次数，范围0-10 |
-| retryDelay | number | 1000 | 否 | 重试延迟(毫秒)，范围100-60000 |
 
 ##### 1.3 sse类型服务器
 ```json
@@ -113,8 +103,7 @@
     "User-Agent": "mcp-all-in-one/1.0.0"
   },
   "reconnectInterval": 1000,
-  "maxRetries": 5,
-  "timeout": 30000
+  "maxRetries": 5
 }
 ```
 
@@ -125,7 +114,6 @@
 | headers | object | {} | 否 | 连接请求头，只允许字母、数字、下划线、连字符 |
 | reconnectInterval | number | 1000 | 否 | 重连间隔(毫秒)，范围100-300000 |
 | maxRetries | number | 5 | 否 | 最大重试次数，范围0-100 |
-| timeout | number | 30000 | 否 | 连接超时(毫秒)，范围1000-300000 |
 
 ### 服务器配置通过命令行参数处理
 
@@ -188,8 +176,7 @@ mcp-all-in-one stdio --mcp-config <mcp-config-file>
       "url": "https://api.example.com/mcp",
       "headers": {
         "Authorization": "Bearer ${API_KEY}"
-      },
-      "timeout": 15000
+      }
     },
     "browser": {
       "type": "sse",

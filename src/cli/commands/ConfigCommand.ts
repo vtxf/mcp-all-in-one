@@ -318,8 +318,7 @@ Configuration File Format / 配置文件格式:
            "url": "http://localhost:8080/mcp",
            "headers": {
              "Authorization": "Bearer token"
-           },
-           "timeout": 30000
+           }
          }
        }
      }
@@ -332,8 +331,7 @@ Configuration File Format / 配置文件格式:
            "url": "http://localhost:8080/sse",
            "headers": {
              "Authorization": "Bearer token"
-           },
-           "timeout": 30000
+           }
          }
        }
      }

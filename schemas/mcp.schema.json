@@ -120,27 +120,6 @@
             }
           },
           "additionalProperties": false
-        },
-        "timeout": {
-          "type": "integer",
-          "description": "Request timeout in milliseconds",
-          "minimum": 1000,
-          "maximum": 300000,
-          "default": 10000
-        },
-        "retries": {
-          "type": "integer",
-          "description": "Number of retry attempts",
-          "minimum": 0,
-          "maximum": 10,
-          "default": 3
-        },
-        "retryDelay": {
-          "type": "integer",
-          "description": "Delay between retries in milliseconds",
-          "minimum": 100,
-          "maximum": 60000,
-          "default": 1000
         }
       }
     },
@@ -186,13 +165,6 @@
           "minimum": 0,
           "maximum": 100,
           "default": 5
-        },
-        "timeout": {
-          "type": "integer",
-          "description": "Connection timeout in milliseconds",
-          "minimum": 1000,
-          "maximum": 300000,
-          "default": 30000
         }
       }
     }
@@ -214,8 +186,7 @@
           "url": "https://api.example.com/mcp",
           "headers": {
             "Authorization": "Bearer ${API_KEY}"
-          },
-          "timeout": 15000
+          }
         },
         "sse-events": {
           "type": "sse",
