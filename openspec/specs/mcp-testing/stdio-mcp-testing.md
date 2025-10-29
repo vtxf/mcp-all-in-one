@@ -173,6 +173,7 @@ NODE_ENV=test
 **单行版本（控制台输入）：**
 ```json
 {"jsonrpc":"2.0","id":16,"method":"tools/call","params":{"name":"example_tool","arguments":{"param1":"test_value"}}}
+{"jsonrpc":"2.0","id":16,"method":"tools/call","params":{"name":"mcp-all-in-one-show-mcp-config","arguments":{}}}
 ```
 
 **预期输出：**
