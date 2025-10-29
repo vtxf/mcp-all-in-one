@@ -46,6 +46,11 @@ flowchart LR
     style H fill:#b2dfdb,stroke:#00796b,color:#004d40
 ```
 
+Claude Code中配置mcp-all-in-one
+![](images/2025-10-29-10-28-19.png)
+
+
+
 ## 有啥厉害的？
 
 ### 🔄 一锅端所有服务
