@@ -83,32 +83,31 @@ export class McpHandler {
         try {
             this.logger.debug('处理MCP请求', { method: request.method });
 
+            // 检查是否为通知（没有ID）
+            const isNotification = !request.id;
+
+            // 如果是通知，处理但不返回响应
+            if (isNotification) {
+                await this.handleNotification(request);
+                // 通知不需要响应，但为了保持兼容性，可以返回空对象
+                return { result: {} };
+            }
+
+            // 处理请求
             let result: any;
 
             switch (request.method) {
                 case 'initialize':
                     result = await this.handleInitialize();
                     break;
-                case 'notifications/initialized':
-                    result = await this.handleNotificationsInitialized();
-                    break;
                 case 'ping':
                     result = await this.handlePing();
-                    break;
-                case 'notifications/cancelled':
-                    result = await this.handleNotificationsCancelled(request.params);
-                    break;
-                case 'notifications/progress':
-                    result = await this.handleNotificationsProgress(request.params);
                     break;
                 case 'tools/list':
                     result = await this.handleListTools();
                     break;
                 case 'tools/call':
                     result = await this.handleCallTool(request.params);
-                    break;
-                case 'notifications/tools/list_changed':
-                    result = await this.handleNotificationsToolsListChanged();
                     break;
                 case 'resources/list':
                     result = await this.handleListResources();
@@ -125,26 +124,14 @@ export class McpHandler {
                 case 'resources/unsubscribe':
                     result = await this.handleUnsubscribeResource(request.params);
                     break;
-                case 'notifications/resources/list_changed':
-                    result = await this.handleNotificationsResourcesListChanged();
-                    break;
-                case 'notifications/resources/updated':
-                    result = await this.handleNotificationsResourcesUpdated(request.params);
-                    break;
                 case 'prompts/list':
                     result = await this.handleListPrompts();
                     break;
                 case 'prompts/get':
                     result = await this.handleGetPrompt(request.params);
                     break;
-                case 'notifications/prompts/list_changed':
-                    result = await this.handleNotificationsPromptsListChanged();
-                    break;
                 case 'logging/setLevel':
                     result = await this.handleSetLogLevel(request.params);
-                    break;
-                case 'notifications/message':
-                    result = await this.handleNotificationsMessage(request.params);
                     break;
                 case 'sampling/createMessage':
                     result = await this.handleSamplingCreateMessage(request.params);
@@ -154,9 +141,6 @@ export class McpHandler {
                     break;
                 case 'roots/list':
                     result = await this.handleListRoots();
-                    break;
-                case 'notifications/roots/list_changed':
-                    result = await this.handleNotificationsRootsListChanged();
                     break;
                 case 'elicitation/create':
                     result = await this.handleElicitationCreate(request.params);
@@ -179,6 +163,44 @@ export class McpHandler {
                     message: error instanceof Error ? error.message : 'Internal server error'
                 }
             };
+        }
+    }
+
+    /**
+     * 处理通知
+     * @param request MCP通知请求
+     */
+    private async handleNotification(request: McpRequest): Promise<void> {
+        switch (request.method) {
+            case 'notifications/initialized':
+                await this.handleNotificationsInitialized();
+                break;
+            case 'notifications/cancelled':
+                await this.handleNotificationsCancelled(request.params);
+                break;
+            case 'notifications/progress':
+                await this.handleNotificationsProgress(request.params);
+                break;
+            case 'notifications/tools/list_changed':
+                await this.handleNotificationsToolsListChanged();
+                break;
+            case 'notifications/resources/list_changed':
+                await this.handleNotificationsResourcesListChanged();
+                break;
+            case 'notifications/resources/updated':
+                await this.handleNotificationsResourcesUpdated(request.params);
+                break;
+            case 'notifications/prompts/list_changed':
+                await this.handleNotificationsPromptsListChanged();
+                break;
+            case 'notifications/message':
+                await this.handleNotificationsMessage(request.params);
+                break;
+            case 'notifications/roots/list_changed':
+                await this.handleNotificationsRootsListChanged();
+                break;
+            default:
+                this.logger.warn(`未知的通知方法: ${request.method}`);
         }
     }
 
@@ -228,12 +250,9 @@ export class McpHandler {
     /**
      * 处理初始化完成通知
      */
-    private async handleNotificationsInitialized(): Promise<any> {
+    private async handleNotificationsInitialized(): Promise<void> {
         this.logger.debug('收到客户端初始化完成通知');
-        return {
-            success: true,
-            message: "Initialized notification received"
-        };
+        // 通知不需要返回响应
     }
 
     /**
@@ -400,24 +419,19 @@ export class McpHandler {
     /**
      * 处理取消通知
      */
-    private async handleNotificationsCancelled(params: any): Promise<any> {
+    private async handleNotificationsCancelled(params: any): Promise<void> {
         const { requestId, reason } = params;
 
         this.logger.info('收到取消通知', { requestId, reason });
 
         // TODO: 实现取消逻辑，需要跟踪正在进行的请求并取消它们
         // 这里可以添加取消特定请求的逻辑
-
-        return {
-            success: true,
-            message: "Cancellation notification received"
-        };
     }
 
     /**
      * 处理进度通知
      */
-    private async handleNotificationsProgress(params: any): Promise<any> {
+    private async handleNotificationsProgress(params: any): Promise<void> {
         const { progressToken, progress, total, message } = params;
 
         this.logger.debug('收到进度通知', {
@@ -428,26 +442,16 @@ export class McpHandler {
         });
 
         // TODO: 实现进度跟踪逻辑，可以将进度信息存储或转发给客户端
-
-        return {
-            success: true,
-            message: "Progress notification received"
-        };
     }
 
     /**
      * 处理工具列表变更通知
      */
-    private async handleNotificationsToolsListChanged(): Promise<any> {
+    private async handleNotificationsToolsListChanged(): Promise<void> {
         this.logger.info('收到工具列表变更通知');
 
         // 重新聚合工具列表
         await this.aggregateTools();
-
-        return {
-            success: true,
-            message: "Tools list changed notification received"
-        };
     }
 
     /**
@@ -537,53 +541,38 @@ export class McpHandler {
     /**
      * 处理资源列表变更通知
      */
-    private async handleNotificationsResourcesListChanged(): Promise<any> {
+    private async handleNotificationsResourcesListChanged(): Promise<void> {
         this.logger.info('收到资源列表变更通知');
 
         // 重新聚合资源列表
         await this.aggregateResources();
-
-        return {
-            success: true,
-            message: "Resources list changed notification received"
-        };
     }
 
     /**
      * 处理资源更新通知
      */
-    private async handleNotificationsResourcesUpdated(params: any): Promise<any> {
+    private async handleNotificationsResourcesUpdated(params: any): Promise<void> {
         const { uri } = params;
 
         this.logger.info('收到资源更新通知', { uri });
 
         // TODO: 实现资源更新处理逻辑，可以通知订阅的客户端
-
-        return {
-            success: true,
-            message: "Resource updated notification received"
-        };
     }
 
     /**
      * 处理提示列表变更通知
      */
-    private async handleNotificationsPromptsListChanged(): Promise<any> {
+    private async handleNotificationsPromptsListChanged(): Promise<void> {
         this.logger.info('收到提示列表变更通知');
 
         // 重新聚合提示列表
         await this.aggregatePrompts();
-
-        return {
-            success: true,
-            message: "Prompts list changed notification received"
-        };
     }
 
     /**
      * 处理日志消息通知
      */
-    private async handleNotificationsMessage(params: any): Promise<any> {
+    private async handleNotificationsMessage(params: any): Promise<void> {
         const { level, message, data } = params;
 
         // 根据日志级别记录消息
@@ -603,11 +592,6 @@ export class McpHandler {
             default:
                 this.logger.info(`[${level.toUpperCase()}] ${message}`, data);
         }
-
-        return {
-            success: true,
-            message: "Message notification received"
-        };
     }
 
     /**
@@ -656,15 +640,10 @@ export class McpHandler {
     /**
      * 处理根目录列表变更通知
      */
-    private async handleNotificationsRootsListChanged(): Promise<any> {
+    private async handleNotificationsRootsListChanged(): Promise<void> {
         this.logger.info('收到根目录列表变更通知');
 
         // TODO: 实现根目录列表变更处理逻辑
-
-        return {
-            success: true,
-            message: "Roots list changed notification received"
-        };
     }
 
     /**
