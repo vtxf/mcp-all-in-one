@@ -288,17 +288,48 @@ export class McpHandler {
             }
         };
 
-        switch (name) {
-            case 'mcp-all-in-one-validate-mcp-config':
-                return await SelfConfigToolsManager.handleValidateMcpConfig(request, this.configPath);
-            case 'mcp-all-in-one-show-mcp-config':
-                return await SelfConfigToolsManager.handleShowMcpConfig(request, this.configPath);
-            case 'mcp-all-in-one-show-mcp-config-schema':
-                return await SelfConfigToolsManager.handleShowMcpConfigSchema();
-            case 'mcp-all-in-one-set-mcp-config':
-                return await SelfConfigToolsManager.handleSetMcpConfig(request, this.configPath, this.logger);
-            default:
-                throw new Error(`未知的自我配置工具: ${name}`);
+        let toolResult: any;
+
+        try {
+            switch (name) {
+                case 'mcp-all-in-one-validate-mcp-config':
+                    toolResult = await SelfConfigToolsManager.handleValidateMcpConfig(request, this.configPath);
+                    break;
+                case 'mcp-all-in-one-show-mcp-config':
+                    toolResult = await SelfConfigToolsManager.handleShowMcpConfig(request, this.configPath);
+                    break;
+                case 'mcp-all-in-one-show-mcp-config-schema':
+                    toolResult = await SelfConfigToolsManager.handleShowMcpConfigSchema();
+                    break;
+                case 'mcp-all-in-one-set-mcp-config':
+                    toolResult = await SelfConfigToolsManager.handleSetMcpConfig(request, this.configPath, this.logger);
+                    break;
+                default:
+                    throw new Error(`未知的自我配置工具: ${name}`);
+            }
+
+            // 将工具结果包装为标准MCP格式
+            return {
+                content: [
+                    {
+                        type: 'text',
+                        text: JSON.stringify(toolResult, null, 2)
+                    }
+                ],
+                isError: false
+            };
+
+        } catch (error) {
+            // 如果工具调用出错，返回错误格式
+            return {
+                content: [
+                    {
+                        type: 'text',
+                        text: `工具调用失败: ${error instanceof Error ? error.message : String(error)}`
+                    }
+                ],
+                isError: true
+            };
         }
     }
 
