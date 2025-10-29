@@ -81,10 +81,10 @@ export class McpHandler {
      */
     async handleRequest(request: McpRequest): Promise<McpResponse> {
         try {
-            this.logger.debug('处理MCP请求', { method: request.method });
+            this.logger.debug('处理MCP请求', request);
 
             // 检查是否为通知（没有ID）
-            const isNotification = !request.id;
+            const isNotification = !('id' in request);
 
             // 如果是通知，处理但不返回响应
             if (isNotification) {
@@ -94,7 +94,7 @@ export class McpHandler {
             }
 
             // 处理请求
-            let result: any;
+            let result: any; 
 
             switch (request.method) {
                 case 'initialize':
