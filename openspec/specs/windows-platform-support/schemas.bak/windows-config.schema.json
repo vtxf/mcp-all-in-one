@@ -37,38 +37,13 @@
         "NODE_ENV": "production",
         "PYTHON_PATH": "C:\\Python39\\python.exe"
       }
-    },
-    "timeout": {
-      "type": "integer",
-      "description": "Command execution timeout in milliseconds (Windows specific)",
-      "minimum": 1000,
-      "maximum": 600000,
-      "default": 60000,
-      "examples": [30000, 60000, 120000]
-    },
-    "retryAttempts": {
-      "type": "integer",
-      "description": "Number of retry attempts on Windows (additional to global retry)",
-      "minimum": 0,
-      "maximum": 5,
-      "default": 1,
-      "examples": [0, 1, 3]
-    },
-    "retryDelay": {
-      "type": "integer",
-      "description": "Delay between retries in milliseconds (Windows specific)",
-      "minimum": 100,
-      "maximum": 10000,
-      "default": 1000,
-      "examples": [500, 1000, 2000]
     }
   },
   "additionalProperties": false,
   "examples": [
     {
       "useShellPrefix": true,
-      "workingDirectory": "C:\\mcp-services",
-      "timeout": 60000
+      "workingDirectory": "C:\\mcp-services"
     },
     {
       "useShellPrefix": false,
@@ -79,8 +54,7 @@
       "useShellPrefix": true,
       "environmentVariables": {
         "NODE_ENV": "development"
-      },
-      "timeout": 120000
+      }
     }
   ]
 }

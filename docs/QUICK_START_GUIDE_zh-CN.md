@@ -39,15 +39,11 @@ cat > ~/.mcp-all-in-one/mcp.json << EOF
   "mcpServers": {
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "."],
-      "timeout": 30000,
-      "restart": true
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "."]
     },
     "time": {
       "command": "uvx",
-      "args": ["mcp-server-time", "--local-timezone=Asia/Shanghai"],
-      "timeout": 60000,
-      "restart": true
+      "args": ["mcp-server-time", "--local-timezone=Asia/Shanghai"]
     }
   }
 }
@@ -148,9 +144,7 @@ After starting mcp-all-in-one, the following tools are automatically available:
   "mcpServers": {
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "."],
-      "timeout": 30000,
-      "restart": true
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "."]
     }
   }
 }
@@ -163,9 +157,7 @@ After starting mcp-all-in-one, the following tools are automatically available:
   "mcpServers": {
     "time": {
       "command": "uvx",
-      "args": ["mcp-server-time", "--local-timezone=Asia/Shanghai"],
-      "timeout": 60000,
-      "restart": true
+      "args": ["mcp-server-time", "--local-timezone=Asia/Shanghai"]
     }
   }
 }
@@ -195,15 +187,11 @@ After starting mcp-all-in-one, the following tools are automatically available:
   "mcpServers": {
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "."],
-      "timeout": 30000,
-      "restart": true
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "."]
     },
     "time": {
       "command": "uvx",
-      "args": ["mcp-server-time", "--local-timezone=Asia/Shanghai"],
-      "timeout": 60000,
-      "restart": true
+      "args": ["mcp-server-time", "--local-timezone=Asia/Shanghai"]
     },
     "web-search": {
       "type": "http",

@@ -42,9 +42,7 @@ Parameters: {
     "mcpServers": {
       "filesystem": {
         "command": "npx",
-        "args": ["-y", "@modelcontextprotocol/server-filesystem", "."],
-        "timeout": 30000,
-        "restart": true
+        "args": ["-y", "@modelcontextprotocol/server-filesystem", "."]
       },
       "web-search": {
         "type": "http",
@@ -200,15 +198,11 @@ Suppose you want to add a time service to existing configuration:
      "mcpServers": {
        "filesystem": {
          "command": "npx",
-         "args": ["-y", "@modelcontextprotocol/server-filesystem", "."],
-         "timeout": 30000,
-         "restart": true
+         "args": ["-y", "@modelcontextprotocol/server-filesystem", "."]
        },
        "time": {
          "command": "uvx",
-         "args": ["mcp-server-time", "--local-timezone=Asia/Shanghai"],
-         "timeout": 60000,
-         "restart": true
+         "args": ["mcp-server-time", "--local-timezone=Asia/Shanghai"]
        }
      }
    }
@@ -218,7 +212,7 @@ Suppose you want to add a time service to existing configuration:
    ```
    Use tool: mcp-all-in-one-set-mcp-config
    Parameters: {
-     "config-content": "{\"mcpServers\":{\"filesystem\":{\"command\":\"npx\",\"args\":[\"-y\",\"@modelcontextprotocol/server-filesystem\",\".\"],\"timeout\":30000,\"restart\":true},\"time\":{\"command\":\"uvx\",\"args\":[\"mcp-server-time\",\"--local-timezone=Asia/Shanghai\"],\"timeout\":60000,\"restart\":true}}}"
+     "config-content": "{\"mcpServers\":{\"filesystem\":{\"command\":\"npx\",\"args\":[\"-y\",\"@modelcontextprotocol/server-filesystem\",\".\"]},\"time\":{\"command\":\"uvx\",\"args\":[\"mcp-server-time\",\"--local-timezone=Asia/Shanghai\"]}}}"
    }
    ```
 
@@ -240,7 +234,7 @@ If you want to temporarily disable a service without deleting it:
    ```
    Use tool: mcp-all-in-one-set-mcp-config
    Parameters: {
-     "config-content": "{\"mcpServers\":{\"filesystem_disabled\":{\"command\":\"npx\",\"args\":[\"-y\",\"@modelcontextprotocol/server-filesystem\",\".\"],\"timeout\":30000,\"restart\":true}}}"
+     "config-content": "{\"mcpServers\":{\"filesystem_disabled\":{\"command\":\"npx\",\"args\":[\"-y\",\"@modelcontextprotocol/server-filesystem\",\".\"]}}}"
    }
    ```
 
@@ -279,9 +273,7 @@ config = {
     "mcpServers": {
         "filesystem": {
             "command": "npx",
-            "args": ["-y", "@modelcontextprotocol/server-filesystem", "."],
-            "timeout": 30000,
-            "restart": True
+            "args": ["-y", "@modelcontextprotocol/server-filesystem", "."]
         }
     }
 }

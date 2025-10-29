@@ -6,9 +6,7 @@
                 "mcp-server-time",
                 "--local-timezone=Asia/Shanghai"
             ],
-            "env": {},
-            "timeout": 60000,
-            "restart": true
+            "env": {}
         },
         "zhipu-web-search": {
             "type": "http",

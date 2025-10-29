@@ -28,9 +28,7 @@
        "mcpServers": {
            "filesystem": {
                "command": "npx",
-               "args": ["-y", "@modelcontextprotocol/server-filesystem", "."],
-               "timeout": 30000,
-               "restart": true
+               "args": ["-y", "@modelcontextprotocol/server-filesystem", "."]
            },
            "web-search": {
                "type": "http",
@@ -41,9 +39,7 @@
            },
            "time": {
                "command": "uvx",
-               "args": ["mcp-server-time", "--local-timezone=Asia/Shanghai"],
-               "timeout": 60000,
-               "restart": true
+               "args": ["mcp-server-time", "--local-timezone=Asia/Shanghai"]
            }
        }
    }

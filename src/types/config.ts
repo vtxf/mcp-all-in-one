@@ -19,10 +19,7 @@ export interface StdioServerConfig {
     args?: string[];
     env?: Record<string, string>;
     cwd?: string;
-    timeout?: number;
-    restart?: boolean;
-    restartDelay?: number;
-}
+  }
 
 /**
  * HTTP类型MCP服务器配置

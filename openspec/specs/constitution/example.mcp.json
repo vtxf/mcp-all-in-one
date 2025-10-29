@@ -13,9 +13,7 @@
                 "-y",
                 "@upstash/context7-mcp@latest"
             ],
-            "env": {},
-            "timeout": 60000,
-            "restart": true
+            "env": {}
         },
         "Time": {
             "command": "uvx",
@@ -23,9 +21,7 @@
                 "mcp-server-time",
                 "--local-timezone=Asia/Shanghai"
             ],
-            "env": {},
-            "timeout": 60000,
-            "restart": true
+            "env": {}
         },
         "Filesystem": {
             "command": "npx",
@@ -36,18 +32,14 @@
                 "C:/Users/vtxf/AppData/Local/Temp",
                 "C:/Users/vtxf/Downloads"
             ],
-            "env": {},
-            "timeout": 30000,
-            "restart": true
+            "env": {}
         },
         "chrome-devtools": {
             "command": "npx",
             "args": [
                 "chrome-devtools-mcp@latest"
             ],
-            "env": {},
-            "timeout": 60000,
-            "restart": true
+            "env": {}
         }
     }
 }

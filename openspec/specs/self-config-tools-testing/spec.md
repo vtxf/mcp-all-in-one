@@ -45,18 +45,14 @@ MCP_CONFIG_PATH=./example.mcp.json
         "mcp-server-time",
         "--local-timezone=Asia/Shanghai"
       ],
-      "env": {},
-      "timeout": 60000,
-      "restart": true
+      "env": {}
     },
     "zhipu-web-search": {
       "type": "http",
       "url": "https://open.bigmodel.cn/api/mcp/web_search_prime/mcp",
       "headers": {
         "Authorization": "Bearer ${Z_AI_API_KEY}"
-      },
-      "timeout": 30000,
-      "restart": true
+      }
     }
   }
 }
@@ -69,9 +65,7 @@ MCP_CONFIG_PATH=./example.mcp.json
     "test-filesystem": {
       "command": "npx",
       "args": ["@modelcontextprotocol/server-filesystem", "/tmp"],
-      "env": {},
-      "timeout": 30000,
-      "restart": true
+      "env": {}
     }
   }
 }
@@ -162,8 +156,7 @@ MCP_CONFIG_PATH=./example.mcp.json
 {
   "mcpServers": {
     "invalid-service": {
-      "type": "invalid-type",
-      "timeout": -1000
+      "type": "invalid-type"
     }
   }
 }
@@ -195,8 +188,7 @@ MCP_CONFIG_PATH=./example.mcp.json
   "result": {
     "valid": false,
     "errors": [
-      "/mcpServers/invalid-service/type: must be equal to one of the allowed values [stdio, http, sse]",
-      "/mcpServers/invalid-service/timeout: must be >= 1000"
+      "/mcpServers/invalid-service/type: must be equal to one of the allowed values [stdio, http, sse]"
     ],
     "configPath": "./invalid-config.json"
   },
@@ -273,7 +265,7 @@ MCP_CONFIG_PATH=./example.mcp.json
     "content": [
       {
         "type": "text",
-        "text": "{\n  \"config\": {\n    \"mcpServers\": {\n      \"Time\": {\n        \"command\": \"uvx\",\n        \"args\": [\n          \"mcp-server-time\",\n          \"--local-timezone=Asia/Shanghai\"\n        ],\n        \"env\": {},\n        \"timeout\": 60000,\n        \"restart\": true\n      },\n      \"zhipu-web-search\": {\n        \"type\": \"http\",\n        \"url\": \"https://open.bigmodel.cn/api/mcp/web_search_prime/mcp\",\n        \"headers\": {\n          \"Authorization\": \"Bearer [实际的API密钥值]\"\n        },\n        \"timeout\": 30000,\n        \"restart\": true\n      }\n    }\n  },\n  \"configPath\": \"./example.mcp.json\",\n  \"envExpanded\": true\n}"
+        "text": "{\n  \"config\": {\n    \"mcpServers\": {\n      \"Time\": {\n        \"command\": \"uvx\",\n        \"args\": [\n          \"mcp-server-time\",\n          \"--local-timezone=Asia/Shanghai\"\n        ],\n        \"env\": {}\n      },\n      \"zhipu-web-search\": {\n        \"type\": \"http\",\n        \"url\": \"https://open.bigmodel.cn/api/mcp/web_search_prime/mcp\",\n        \"headers\": {\n          \"Authorization\": \"Bearer [实际的API密钥值]\"\n        }\n      }\n    }\n  },\n  \"configPath\": \"./example.mcp.json\",\n  \"envExpanded\": true\n}"
       }
     ]
   },
@@ -317,9 +309,7 @@ MCP_CONFIG_PATH=./example.mcp.json
             "@modelcontextprotocol/server-filesystem",
             "/tmp"
           ],
-          "env": {},
-          "timeout": 30000,
-          "restart": true
+          "env": {}
         }
       }
     },
@@ -394,11 +384,7 @@ MCP_CONFIG_PATH=./example.mcp.json
             "command": {"type": "string", "description": "Command to start the MCP server"},
             "args": {"type": "array", "description": "Command arguments", "items": {"type": "string"}, "default": []},
             "env": {"type": "object", "description": "Environment variables", "patternProperties": {"^[A-Z_][A-Z0-9_]*$": {"type": "string"}}, "additionalProperties": false},
-            "cwd": {"type": "string", "description": "Working directory", "default": "."},
-            "timeout": {"type": "integer", "description": "Connection timeout in milliseconds", "minimum": 1000, "maximum": 300000, "default": 30000},
-            "restart": {"type": "boolean", "description": "Auto restart on failure", "default": true},
-            "restartDelay": {"type": "integer", "description": "Delay before restart in milliseconds", "minimum": 100, "maximum": 60000, "default": 5000}
-          }
+            "cwd": {"type": "string", "description": "Working directory", "default": "."}
         },
         "httpServer": {
           "type": "object",
@@ -408,8 +394,7 @@ MCP_CONFIG_PATH=./example.mcp.json
             "type": {"type": "string", "description": "Server type", "const": "http"},
             "url": {"type": "string", "description": "HTTP server URL", "format": "uri"},
             "headers": {"type": "object", "description": "HTTP headers", "patternProperties": {"^[^\\s\\$\\{\\}]+$": {"type": "string"}}, "additionalProperties": false},
-            "timeout": {"type": "integer", "description": "Request timeout in milliseconds", "minimum": 1000, "maximum": 300000, "default": 10000},
-            "retries": {"type": "integer", "description": "Number of retry attempts", "minimum": 0, "maximum": 10, "default": 3},
+                        "retries": {"type": "integer", "description": "Number of retry attempts", "minimum": 0, "maximum": 10, "default": 3},
             "retryDelay": {"type": "integer", "description": "Delay between retries in milliseconds", "minimum": 100, "maximum": 60000, "default": 1000}
           }
         },
@@ -422,9 +407,7 @@ MCP_CONFIG_PATH=./example.mcp.json
             "url": {"type": "string", "description": "SSE server URL", "format": "uri"},
             "headers": {"type": "object", "description": "SSE connection headers", "patternProperties": {"^[^\\s\\$\\{\\}]+$": {"type": "string"}}, "additionalProperties": false},
             "reconnectInterval": {"type": "integer", "description": "Reconnection interval in milliseconds", "minimum": 100, "maximum": 300000, "default": 1000},
-            "maxRetries": {"type": "integer", "description": "Maximum reconnection attempts", "minimum": 0, "maximum": 100, "default": 5},
-            "timeout": {"type": "integer", "description": "Connection timeout in milliseconds", "minimum": 1000, "maximum": 300000, "default": 30000}
-          }
+            "maxRetries": {"type": "integer", "description": "Maximum reconnection attempts", "minimum": 0, "maximum": 100, "default": 5}
         }
       }
     },
@@ -450,7 +433,7 @@ MCP_CONFIG_PATH=./example.mcp.json
     "name": "mcp-all-in-one-set-mcp-config",
     "arguments": {
       "config-file": "./new-test-config.json",
-      "config-content": "{\"mcpServers\":{\"test-memory\":{\"command\":\"npx\",\"args\":[\"@modelcontextprotocol/server-memory\"],\"env\":{},\"timeout\":30000,\"restart\":true}}}"
+      "config-content": "{\"mcpServers\":{\"test-memory\":{\"command\":\"npx\",\"args\":[\"@modelcontextprotocol/server-memory\"],\"env\":{}}}}"
     }
   }
 }
@@ -458,7 +441,7 @@ MCP_CONFIG_PATH=./example.mcp.json
 
 **单行版本（控制台输入）：**
 ```json
-{"jsonrpc":"2.0","id":8,"method":"tools/call","params":{"name":"mcp-all-in-one-set-mcp-config","arguments":{"config-file":"./new-test-config.json","config-content":"{\"mcpServers\":{\"test-memory\":{\"command\":\"npx\",\"args\":[\"@modelcontextprotocol/server-memory\"],\"env\":{},\"timeout\":30000,\"restart\":true}}}"}}}
+{"jsonrpc":"2.0","id":8,"method":"tools/call","params":{"name":"mcp-all-in-one-set-mcp-config","arguments":{"config-file":"./new-test-config.json","config-content":"{\"mcpServers\":{\"test-memory\":{\"command\":\"npx\",\"args\":[\"@modelcontextprotocol/server-memory\"],\"env\":{}}}"}}}
 ```
 
 **预期输出：**
@@ -489,7 +472,7 @@ MCP_CONFIG_PATH=./example.mcp.json
   "params": {
     "name": "mcp-all-in-one-set-mcp-config",
     "arguments": {
-      "config-content": "{\"mcpServers\":{\"updated-time\":{\"command\":\"uvx\",\"args\":[\"mcp-server-time\",\"--local-timezone=UTC\"],\"env\":{},\"timeout\":45000,\"restart\":true}}}"
+      "config-content": "{\"mcpServers\":{\"updated-time\":{\"command\":\"uvx\",\"args\":[\"mcp-server-time\",\"--local-timezone=UTC\"],\"env\":{}}}}"
     }
   }
 }
@@ -497,7 +480,7 @@ MCP_CONFIG_PATH=./example.mcp.json
 
 **单行版本（控制台输入）：**
 ```json
-{"jsonrpc":"2.0","id":9,"method":"tools/call","params":{"name":"mcp-all-in-one-set-mcp-config","arguments":{"config-content":"{\"mcpServers\":{\"updated-time\":{\"command\":\"uvx\",\"args\":[\"mcp-server-time\",\"--local-timezone=UTC\"],\"env\":{},\"timeout\":45000,\"restart\":true}}}"}}}
+{"jsonrpc":"2.0","id":9,"method":"tools/call","params":{"name":"mcp-all-in-one-set-mcp-config","arguments":{"config-content":"{\"mcpServers\":{\"updated-time\":{\"command\":\"uvx\",\"args\":[\"mcp-server-time\",\"--local-timezone=UTC\"],\"env\":{}}}"}}}
 ```
 
 **预期输出：**
@@ -529,7 +512,7 @@ MCP_CONFIG_PATH=./example.mcp.json
     "name": "mcp-all-in-one-set-mcp-config",
     "arguments": {
       "config-file": "./invalid-update.json",
-      "config-content": "{\"mcpServers\":{\"broken\":{\"type\":\"invalid\",\"timeout\":-500}}}"
+      "config-content": "{\"mcpServers\":{\"broken\":{\"type\":\"invalid\"}}}"
     }
   }
 }
@@ -537,7 +520,7 @@ MCP_CONFIG_PATH=./example.mcp.json
 
 **单行版本（控制台输入）：**
 ```json
-{"jsonrpc":"2.0","id":10,"method":"tools/call","params":{"name":"mcp-all-in-one-set-mcp-config","arguments":{"config-file":"./invalid-update.json","config-content":"{\"mcpServers\":{\"broken\":{\"type\":\"invalid\",\"timeout\":-500}}}"}}}
+{"jsonrpc":"2.0","id":10,"method":"tools/call","params":{"name":"mcp-all-in-one-set-mcp-config","arguments":{"config-file":"./invalid-update.json","config-content":"{\"mcpServers\":{\"broken\":{\"type\":\"invalid\"}}}"}}}
 ```
 
 **预期输出：**
@@ -547,8 +530,7 @@ MCP_CONFIG_PATH=./example.mcp.json
     "success": false,
     "configPath": "./invalid-update.json",
     "errors": [
-      "/mcpServers/broken/type: must be equal to one of the allowed values [stdio, http, sse]",
-      "/mcpServers/broken/timeout: must be >= 1000"
+      "/mcpServers/broken/type: must be equal to one of the allowed values [stdio, http, sse]"
     ],
     "restartRequired": false,
     "restartMessage": ""
@@ -727,7 +709,7 @@ MCP_CONFIG_PATH=./example.mcp.json
 
 **6.1.3 创建新配置**
 ```json
-{"jsonrpc":"2.0","id":17,"method":"tools/call","params":{"name":"mcp-all-in-one-set-mcp-config","arguments":{"config-file":"./workflow-test.json","config-content":"{\"mcpServers\":{\"workflow-test\":{\"command\":\"echo\",\"args\":[\"test\"],\"env\":{},\"timeout\":30000,\"restart\":true}}}"}}}
+{"jsonrpc":"2.0","id":17,"method":"tools/call","params":{"name":"mcp-all-in-one-set-mcp-config","arguments":{"config-file":"./workflow-test.json","config-content":"{\"mcpServers\":{\"workflow-test\":{\"command\":\"echo\",\"args\":[\"test\"],\"env\":{}}}"}}}
 ```
 
 **6.1.4 验证新配置**

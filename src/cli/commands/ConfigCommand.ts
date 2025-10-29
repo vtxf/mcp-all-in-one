@@ -303,9 +303,7 @@ Configuration File Format / 配置文件格式:
        "mcpServers": {
          "service-name": {
            "command": "npx",
-           "args": ["-y", "@modelcontextprotocol/server-filesystem", "."],
-           "timeout": 30000,
-           "restart": true
+           "args": ["-y", "@modelcontextprotocol/server-filesystem", "."]
          }
        }
      }

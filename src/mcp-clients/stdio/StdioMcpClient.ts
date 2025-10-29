@@ -42,8 +42,7 @@ export class StdioMcpClient extends BaseMcpClient {
 
             this.logger.debug(`启动STDIO进程: ${command} ${args.join(' ')}`, {
                 cwd: this.config.cwd,
-                env: { ...process.env, ...this.config.env },
-                timeout: this.config.timeout
+                env: { ...process.env, ...this.config.env }
             });
 
             // 创建STDIO传输 - 让StdioClientTransport内部管理进程

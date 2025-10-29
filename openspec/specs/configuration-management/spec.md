@@ -17,10 +17,7 @@
       "command": "npx",
       "args": ["@modelcontextprotocol/server-filesystem", "."],
       "env": {},
-      "cwd": ".",
-      "timeout": 30000,
-      "restart": true,
-      "restartDelay": 5000
+      "cwd": "."
     },
     "web-api": {
       "type": "http",
@@ -58,10 +55,7 @@
   "env": {
     "NODE_ENV": "production"
   },
-  "cwd": ".",
-  "timeout": 30000,
-  "restart": true,
-  "restartDelay": 5000
+  "cwd": "."
 }
 ```
 
@@ -72,9 +66,6 @@
 | args | string[] | [] | 否 | 命令参数 |
 | env | object | {} | 否 | 环境变量，只允许大写字母、数字、下划线 |
 | cwd | string | "." | 否 | 工作目录 |
-| timeout | number | 30000 | 否 | 连接超时(毫秒)，范围1000-300000 |
-| restart | boolean | true | 否 | 失败时自动重启 |
-| restartDelay | number | 5000 | 否 | 重启延迟(毫秒)，范围100-60000 |
 
 ##### 1.2 http类型服务器
 ```json

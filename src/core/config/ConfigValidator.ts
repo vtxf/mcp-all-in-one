@@ -203,18 +203,6 @@ export class ConfigValidator {
                 value: config.args
             });
         }
-
-        if (config.timeout !== undefined) {
-            if (typeof config.timeout !== 'number' ||
-                config.timeout < 1000 ||
-                config.timeout > 300000) {
-                errors.push({
-                    path: `${path}.timeout`,
-                    message: 'timeout必须是1000-300000之间的数字',
-                    value: config.timeout
-                });
-            }
-        }
     }
 
     /**

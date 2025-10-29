@@ -104,9 +104,7 @@ cat > test.mcp.json << 'EOF'
     "mcpServers": {
         "filesystem": {
             "command": "npx",
-            "args": ["-y", "@modelcontextprotocol/server-filesystem", "."],
-            "timeout": 30000,
-            "restart": true
+            "args": ["-y", "@modelcontextprotocol/server-filesystem", "."]
         }
     }
 }
@@ -394,10 +392,7 @@ npm run-script dev -- --help
             "args": ["-y", "@modelcontextprotocol/server-filesystem", "."],
             "env": {
                 "NODE_ENV": "development"
-            },
-            "timeout": 30000,
-            "restart": true,
-            "restartDelay": 5000
+            }
         }
     }
 }
@@ -414,10 +409,7 @@ npm run-script dev -- --help
             "headers": {
                 "Authorization": "Bearer ${API_KEY}",
                 "Content-Type": "application/json"
-            },
-            "timeout": 15000,
-            "retries": 3,
-            "retryDelay": 1000
+            }
         }
     }
 }
@@ -435,8 +427,7 @@ npm run-script dev -- --help
                 "User-Agent": "mcp-all-in-one/1.0.0"
             },
             "reconnectInterval": 5000,
-            "maxRetries": 3,
-            "timeout": 30000
+            "maxRetries": 3
         }
     }
 }
