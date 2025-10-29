@@ -1,6 +1,6 @@
 {
     "name": "mcp-all-in-one",
-    "version": "1.2.3",
+    "version": "1.2.4",
     "description": "Merge multiple MCP services into a unified MCP service | 合并多个MCP服务为一个统一的MCP服务",
     "main": "dist/index.js",
     "bin": {
