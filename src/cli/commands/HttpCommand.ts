@@ -48,7 +48,7 @@ export class HttpCommand extends BaseCommand {
 
             const port = args.port || 3095;
             const host = args.host || '127.0.0.1';
-            const corsEnabled = args.cors || false;
+            const corsEnabled = args.cors !== undefined ? args.cors : true;
 
             this.logger.info('启动HTTP模式MCP服务', {
                 port,
@@ -275,7 +275,7 @@ Options / 选项:
   -c, --mcp-config <path>    Specify MCP configuration file path (default: ~/.mcp-all-in-one/mcp.json) / 指定MCP配置文件路径 (默认: ~/.mcp-all-in-one/mcp.json)
   -p, --port <port>           Set HTTP service port (default: 3095) / 设置HTTP服务端口 (默认: 3095)
   -h, --host <host>           Set binding host address (default: 127.0.0.1) / 设置绑定主机地址 (默认: 127.0.0.1)
-      --cors                  Enable CORS cross-origin support (default: false) / 启用CORS跨域支持 (默认: false)
+      --cors                  Enable CORS cross-origin support (default: true) / 启用CORS跨域支持 (默认: true)
       --cors-origin <origin>   Set CORS allowed origin (default: *) / 设置CORS允许的源地址 (默认: *)
   -l, --log-level <level>     Set log level (error|warn|info|debug, default: info) / 设置日志级别 (error|warn|info|debug，默认: info)
   -s, --silent                Enable silent mode / 启用静默模式

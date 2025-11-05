@@ -116,7 +116,7 @@ mcp-all-in-one http --mcp-config <mcp-config-file> --port <port> --host <host> -
 ```
 - `--port <port>`: HTTP服务端口号，默认3095
 - `--host <host>`: HTTP服务IP地址，默认127.0.0.1
-- `--cors <cors>`: 是否开启CORS，默认false
+- `--cors <cors>`: 是否开启CORS，默认true
 
 #### 2. sse子命令
 ```bash

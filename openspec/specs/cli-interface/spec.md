@@ -59,7 +59,7 @@ mcp-all-in-one http [options]
 | `--mcp-config` | string | `~/.mcp-all-in-one/mcp.json` | MCP配置文件路径 |
 | `--port` | number | 3095 | HTTP服务端口 |
 | `--host` | string | 127.0.0.1 | 绑定主机地址 |
-| `--cors` | boolean | false | 启用CORS跨域支持 |
+| `--cors` | boolean | true | 启用CORS跨域支持 |
 | `--cors-origin` | string | * | CORS允许的源地址 |
 | `--log-level` | string | `info` | 日志级别，可选值：error、warn、info、debug，默认为info |
 | `--silent` | flag | false | 启用静默模式，完全禁用日志输出 |

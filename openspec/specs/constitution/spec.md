@@ -32,7 +32,7 @@ mcp-all-in-one http --mcp-config <mcp-config-file> --port <port> --host <host> -
 - `--mcp-config <mcp-config-file>`：指定MCP配置文件的路径，未配置时则指向默认使用用户目录下.mcp-all-in-one/mcp.json。该文件未创建时需要自动创建
 - `--port <port>`：指定HTTP服务的端口号，默认值为3095。
 - `--host <host>`：指定HTTP服务的IP地址，默认值为127.0.0.1。
-- `--cors <cors>`：指定是否开启CORS，默认值为false。
+- `--cors <cors>`：指定是否开启CORS，默认值为true。
 - `--log-level <log-level>`：指定日志级别，可选值为：error、warn、info、debug，默认为info
 - `--silent`：启用静默模式，完全禁用日志输出，优先级高于--log-level
 
